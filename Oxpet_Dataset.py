@@ -1,8 +1,6 @@
 import h5py
+import torch
 from torch.utils.data import Dataset
-# from torch.utils.data import DataLoader
-# import numpy as np
-# import os
 
 class Oxpet_Dataset(Dataset):
     def __init__(self, img_path, binary_path, bboxes_path, masks_path, require_binary = True, require_bbox = True, require_masks = True):
@@ -18,7 +16,7 @@ class Oxpet_Dataset(Dataset):
             self.masks_path = masks_path
 
     def __len__(self):
-        with h5py.File(self.binary_path,"r") as f:
+        with h5py.File(self.img_path,"r") as f:
             key = list(f.keys())[0]
             return len(f[key])
 
@@ -30,21 +28,22 @@ class Oxpet_Dataset(Dataset):
 
         with h5py.File(self.img_path,"r") as f:
             key = list(f.keys())[0]
-            img = f[key][idx]
+            img = torch.FloatTensor(f[key][idx]).permute(2,0,1)
         
         if self.require_binary:
             with h5py.File(self.binary_path,"r") as f:
                 key = list(f.keys())[0]
-                binary = f[key][idx]
+                binary = torch.FloatTensor(f[key][idx])
         
         if self.require_bbox:
             with h5py.File(self.bboxes_path,"r") as f:
                 key = list(f.keys())[0]
-                bboxes = f[key][idx]
+                bboxes = torch.FloatTensor(f[key][idx])
+
         if self.require_masks:
             with h5py.File(self.masks_path,"r") as f:
                 key = list(f.keys())[0]
-                masks = f[key][idx]
+                masks = torch.FloatTensor(f[key][idx]).permute(2,0,1)
         
         result = [img]
         if self.require_binary:
@@ -55,6 +54,11 @@ class Oxpet_Dataset(Dataset):
             result.append(masks)
         return result
 
-# training_data = Oxpet_Dataset(os.path.join("datasets-oxpet", "train","images.h5"),os.path.join("datasets-oxpet", "train","binary.h5"),os.path.join("datasets-oxpet", "train","bboxes.h5"),os.path.join("datasets-oxpet", "train","masks.h5"), require_binary=False, require_masks=False)
-# print(len(training_data.__getitem__(0)))
-# ox_dataloader = DataLoader(training_data, batch_size=32, shuffle= True,num_workers=4)
+if __name__ == '__main__':
+    from torch.utils.data import DataLoader
+    import numpy as np
+    import os
+
+    training_data = Oxpet_Dataset(os.path.join("datasets-oxpet", "train","images.h5"),os.path.join("datasets-oxpet", "train","binary.h5"),os.path.join("datasets-oxpet", "train","bboxes.h5"),os.path.join("datasets-oxpet", "train","masks.h5"))
+    print(training_data.__getitem__(0)[1].shape)
+    # ox_dataloader = DataLoader(training_data, batch_size=32, shuffle= True,num_workers=4)
