@@ -3,13 +3,9 @@ from Oxpet_Dataset import Oxpet_Dataset
 from torch.utils.data import DataLoader
 import torch
 import torch.optim as optim
-import torchvision.transforms as transforms
 import os
 
 if __name__ == '__main__':
-    transform = transforms.Compose(
-        [transforms.ToTensor(),
-        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
     
     batch_size = 20
     trainset = Oxpet_Dataset(os.path.join("datasets-oxpet", "train","images.h5"),os.path.join("datasets-oxpet", "train","binary.h5"),os.path.join("datasets-oxpet", "train","bboxes.h5"),os.path.join("datasets-oxpet", "train","masks.h5"), require_binary=False, require_bbox=False)
@@ -17,7 +13,7 @@ if __name__ == '__main__':
     validset = Oxpet_Dataset(os.path.join("datasets-oxpet", "val","images.h5"),os.path.join("datasets-oxpet", "val","binary.h5"),os.path.join("datasets-oxpet", "val","bboxes.h5"),os.path.join("datasets-oxpet", "val","masks.h5"), require_binary=False, require_bbox=False)
     validloader = DataLoader(validset, batch_size=batch_size, shuffle= True,num_workers=4)
 
-    net = UNet(num_classes=2)
+    net = UNet()
 
     criterion = torch.nn.MSELoss()
     optimizer = optim.Adam(net.parameters(), lr=0.001)
@@ -40,9 +36,9 @@ if __name__ == '__main__':
 
             # print statistics
             running_loss += loss.item()
-            if i % 2000 == 1999:    # print every 2000 mini-batches
+            if i % 20 == 19:
                 print('[%d, %5d] loss: %.3f' %
-                    (epoch + 1, i + 1, running_loss / 2000))
+                    (epoch + 1, i + 1, running_loss / 20))
                 running_loss = 0.0
 
     print('Training done.')

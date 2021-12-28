@@ -9,10 +9,6 @@ import os
 if __name__ == '__main__':
 
     ## cifar-10 dataset
-    transform = transforms.Compose(
-        [transforms.ToTensor(),
-        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
-
     batch_size = 1
 
     testset = Oxpet_Dataset(os.path.join("datasets-oxpet", "test","images.h5"),os.path.join("datasets-oxpet", "test","binary.h5"),os.path.join("datasets-oxpet", "test","bboxes.h5"),os.path.join("datasets-oxpet", "test","masks.h5"), require_binary=False, require_bbox=False)
@@ -30,8 +26,10 @@ if __name__ == '__main__':
 
     outputs = model(images)
     plt.figure(figsize=(10,10))
-    plt.subplot(1,2,1)
-    plt.imshow(outputs)
-    plt.subplot(1,2,2)
-    plt.imshow(labels)
-    plt.savefig('res.png')
+    plt.subplot(1,3,1)
+    plt.imshow(images[0].permute(1,2,0)/255)
+    plt.subplot(1,3,2)
+    plt.imshow(outputs[0].cpu().reshape(256,256).detach().numpy(),cmap='gray')
+    plt.subplot(1,3,3)
+    plt.imshow(labels.reshape(256,256),cmap='gray')
+    plt.show()
