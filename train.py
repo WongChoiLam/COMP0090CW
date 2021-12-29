@@ -15,7 +15,7 @@ if __name__ == '__main__':
 
     net = UNet()
 
-    criterion = torch.nn.MSELoss()
+    criterion = torch.nn.BCEWithLogitsLoss()
     optimizer = optim.Adam(net.parameters(), lr=0.001)
 
     for epoch in range(2):  # loop over the dataset multiple times

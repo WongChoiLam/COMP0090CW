@@ -24,12 +24,15 @@ if __name__ == '__main__':
     ## inference
     images, labels = dataiter.next()
 
-    outputs = model(images)
+    outputs = torch.sigmoid(model(images))
+    output = outputs[0].cpu().reshape(256,256).detach()
+    output[output>=0.5] = 1
+    output[output<0.5] = 0
     plt.figure(figsize=(10,10))
     plt.subplot(1,3,1)
-    plt.imshow(images[0].permute(1,2,0)/255)
+    plt.imshow(images[0].permute(1,2,0))
     plt.subplot(1,3,2)
-    plt.imshow(outputs[0].cpu().reshape(256,256).detach().numpy(),cmap='gray')
+    plt.imshow(output,cmap='gray')
     plt.subplot(1,3,3)
     plt.imshow(labels.reshape(256,256),cmap='gray')
     plt.show()
