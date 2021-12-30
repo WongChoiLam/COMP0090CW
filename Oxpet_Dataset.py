@@ -13,8 +13,7 @@ class Oxpet_Dataset(Dataset):
         if self.require_masks:  self.mask = h5py.File(masks_path,"r")
 
         self.img = h5py.File(img_path,"r")
-        self.length = self.binary['/binary'].__len__()
-        print(self.length)
+        self.length = self.img['/images'].__len__()
 
     def __len__(self):
         return self.length
@@ -47,7 +46,7 @@ if __name__ == '__main__':
 
     # a = time.time()
     training_data = Oxpet_Dataset(os.path.join("datasets-oxpet", "train","images.h5"),os.path.join("datasets-oxpet", "train","binary.h5"),os.path.join("datasets-oxpet", "train","bboxes.h5"),os.path.join("datasets-oxpet", "train","masks.h5"))
-    ox_dataloader = DataLoader(training_data, batch_size=8, shuffle= True,num_workers=8)
+    ox_dataloader = DataLoader(training_data, batch_size=50, shuffle= True,num_workers=4)
     # b = time.time()
     # print(b-a)
     # a = time.time()
@@ -57,10 +56,11 @@ if __name__ == '__main__':
     # print(b-a)
     a = time.time()
     for i, data in enumerate(ox_dataloader, 0):
-        b = time.time()
-        print(b -a)
-        a = b
-    # d = time.time()
+        if i == 5:
+            break
+        pass
+    d = time.time()
+    print(d-a)
     # print(d-c)
     # c = time.time()
     # for i, data in enumerate(ox_dataloader_RAM, 0):

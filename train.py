@@ -1,5 +1,6 @@
 from UNet import UNet
-from Oxpet_Dataset import Oxpet_Dataset
+# from Oxpet_Dataset import Oxpet_Dataset
+from Oxpet_Dataset_RAM import Oxpet_Dataset
 from torch.utils.data import DataLoader
 import torch
 import torch.optim as optim
@@ -10,8 +11,8 @@ if __name__ == '__main__':
     batch_size = 20
     trainset = Oxpet_Dataset(os.path.join("datasets-oxpet", "train","images.h5"),os.path.join("datasets-oxpet", "train","binary.h5"),os.path.join("datasets-oxpet", "train","bboxes.h5"),os.path.join("datasets-oxpet", "train","masks.h5"), require_binary=False, require_bbox=False)
     trainloader = DataLoader(trainset, batch_size=batch_size, shuffle= True,num_workers=4)
-    validset = Oxpet_Dataset(os.path.join("datasets-oxpet", "val","images.h5"),os.path.join("datasets-oxpet", "val","binary.h5"),os.path.join("datasets-oxpet", "val","bboxes.h5"),os.path.join("datasets-oxpet", "val","masks.h5"), require_binary=False, require_bbox=False)
-    validloader = DataLoader(validset, batch_size=batch_size, shuffle= True,num_workers=4)
+    # validset = Oxpet_Dataset(os.path.join("datasets-oxpet", "val","images.h5"),os.path.join("datasets-oxpet", "val","binary.h5"),os.path.join("datasets-oxpet", "val","bboxes.h5"),os.path.join("datasets-oxpet", "val","masks.h5"), require_binary=False, require_bbox=False)
+    # validloader = DataLoader(validset, batch_size=batch_size, shuffle= True,num_workers=4)
 
     net = UNet()
 
@@ -35,11 +36,12 @@ if __name__ == '__main__':
             optimizer.step()
 
             # print statistics
-            running_loss += loss.item()
-            if i % 20 == 19:
-                print('[%d, %5d] loss: %.3f' %
-                    (epoch + 1, i + 1, running_loss / 20))
-                running_loss = 0.0
+            # running_loss += loss.item()
+            # if i % 20 == 19:
+            #     print('[%d, %5d] loss: %.3f' %
+            #         (epoch + 1, i + 1, running_loss / 20))
+            #     running_loss = 0.0
+            print(loss.item())
 
     print('Training done.')
 
