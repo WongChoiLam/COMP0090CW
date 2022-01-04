@@ -32,8 +32,7 @@ class Oxpet_Dataset(Dataset):
             result.append(bboxes)
 
         if self.require_masks:
-            masks = torch.tensor(self.mask['/masks'][idx][()].astype('float32')).permute(2,0,1)/255.0
-            masks[masks != 0] = 1
+            masks = torch.tensor(self.mask['/masks'][idx][()].astype('int64')).permute(2,0,1)
             result.append(masks)
         
         return result
@@ -44,28 +43,5 @@ if __name__ == '__main__':
     import os
     import time
 
-    # a = time.time()
     training_data = Oxpet_Dataset(os.path.join("datasets-oxpet", "train","images.h5"),os.path.join("datasets-oxpet", "train","binary.h5"),os.path.join("datasets-oxpet", "train","bboxes.h5"),os.path.join("datasets-oxpet", "train","masks.h5"))
     ox_dataloader = DataLoader(training_data, batch_size=50, shuffle= True,num_workers=4)
-    # b = time.time()
-    # print(b-a)
-    # a = time.time()
-    # training_data_RAM = Oxpet_Dataset_True(os.path.join("datasets-oxpet", "train","images.h5"),os.path.join("datasets-oxpet", "train","binary.h5"),os.path.join("datasets-oxpet", "train","bboxes.h5"),os.path.join("datasets-oxpet", "train","masks.h5"))
-    # ox_dataloader_RAM = DataLoader(training_data_RAM, batch_size=8, shuffle= True,num_workers=8)
-    # b = time.time()
-    # print(b-a)
-    a = time.time()
-    for i, data in enumerate(ox_dataloader, 0):
-        if i == 5:
-            break
-        pass
-    d = time.time()
-    print(d-a)
-    # print(d-c)
-    # c = time.time()
-    # for i, data in enumerate(ox_dataloader_RAM, 0):
-    #     if i == 5:
-    #         break
-    #     pass
-    # d = time.time()
-    # print(d-c)
