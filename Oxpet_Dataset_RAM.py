@@ -36,3 +36,20 @@ class Oxpet_Dataset(Dataset):
             result.append(masks)
         
         return result
+
+if __name__ == '__main__':
+    from torch.utils.data import DataLoader
+    import numpy as np
+    import os
+    import time
+    
+    training_data = Oxpet_Dataset(os.path.join("datasets-oxpet", "train","images.h5"),os.path.join("datasets-oxpet", "train","binary.h5"),os.path.join("datasets-oxpet", "train","bboxes.h5"),os.path.join("datasets-oxpet", "train","masks.h5"),False,False)
+    # training_data = Oxpet_Dataset(os.path.join("datasets-oxpet", "train","images.h5"),os.path.join("datasets-oxpet", "train","binary.h5"),os.path.join("datasets-oxpet", "train","bboxes.h5"),os.path.join("datasets-oxpet", "train","masks.h5"),False,False,False)
+    ox_dataloader = DataLoader(training_data, batch_size=16, shuffle= True,num_workers=4)
+    # training_data.__getitem__(0)
+    for i in range(10):
+        a = time.time()
+        for i, data in enumerate(ox_dataloader):
+            pass
+        b = time.time()
+        print(b-a)
