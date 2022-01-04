@@ -1,6 +1,6 @@
 from UNet import UNet
-# from Oxpet_Dataset import Oxpet_Dataset
-from Oxpet_Dataset_RAM import Oxpet_Dataset
+from Oxpet_Dataset import Oxpet_Dataset
+# from Oxpet_Dataset_RAM import Oxpet_Dataset
 from torch.utils.data import DataLoader
 import torch
 import torch.optim as optim
@@ -9,7 +9,7 @@ import os
 if __name__ == '__main__':
     
     batch_size = 20
-    trainset = Oxpet_Dataset(os.path.join("datasets-oxpet", "train","images.h5"),os.path.join("datasets-oxpet", "train","binary.h5"),os.path.join("datasets-oxpet", "train","bboxes.h5"),os.path.join("datasets-oxpet", "train","masks.h5"), require_binary=False, require_bbox=False)
+    trainset = Oxpet_Dataset(os.path.join("datasets-oxpet-rewritten", "train","images.h5"),os.path.join("datasets-oxpet-rewritten", "train","binary.h5"),os.path.join("datasets-oxpet-rewritten", "train","bboxes.h5"),os.path.join("datasets-oxpet-rewritten", "train","masks.h5"),False,False)
     trainloader = DataLoader(trainset, batch_size=batch_size, shuffle= True,num_workers=4)
     # validset = Oxpet_Dataset(os.path.join("datasets-oxpet", "val","images.h5"),os.path.join("datasets-oxpet", "val","binary.h5"),os.path.join("datasets-oxpet", "val","bboxes.h5"),os.path.join("datasets-oxpet", "val","masks.h5"), require_binary=False, require_bbox=False)
     # validloader = DataLoader(validset, batch_size=batch_size, shuffle= True,num_workers=4)

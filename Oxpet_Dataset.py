@@ -1,5 +1,6 @@
 import h5py
 import torch
+import numpy as np
 from torch.utils.data import Dataset
 
 class Oxpet_Dataset(Dataset):
@@ -13,26 +14,26 @@ class Oxpet_Dataset(Dataset):
         if self.require_masks:  self.mask = h5py.File(masks_path,"r")
 
         self.img = h5py.File(img_path,"r")
-        self.length = self.img['/images'].__len__()
+        self.length = len(list(self.img))
 
     def __len__(self):
         return self.length
 
     def __getitem__(self, idx):
 
-        img = torch.tensor(self.img['/images'][idx][()].astype('float32')).permute(2,0,1)/255.0
+        img = torch.tensor(self.img[f'{idx}'][()].astype('float32')).permute(2,0,1)/255.0
         result = [img]
 
         if self.require_binary:
-            binary = torch.tensor(self.binary['/binary'][idx][()].astype('int64'))
+            binary = torch.tensor(self.binary[f'{idx}'][()].astype('int64'))
             result.append(binary)
         
         if self.require_bbox:
-            bboxes = torch.tensor(self.bbox['/bboxes'][idx][()].astype('float32'))
+            bboxes = torch.tensor(self.bbox[f'{idx}'][()].astype('float32'))
             result.append(bboxes)
 
         if self.require_masks:
-            masks = torch.tensor(self.mask['/masks'][idx][()].astype('int64')).permute(2,0,1)
+            masks = torch.tensor(self.mask[f'{idx}'][()].astype('int64')).permute(2,0,1)
             result.append(masks)
         
         return result
@@ -42,6 +43,14 @@ if __name__ == '__main__':
     import numpy as np
     import os
     import time
-
-    training_data = Oxpet_Dataset(os.path.join("datasets-oxpet", "train","images.h5"),os.path.join("datasets-oxpet", "train","binary.h5"),os.path.join("datasets-oxpet", "train","bboxes.h5"),os.path.join("datasets-oxpet", "train","masks.h5"))
-    ox_dataloader = DataLoader(training_data, batch_size=50, shuffle= True,num_workers=4)
+    
+    training_data = Oxpet_Dataset(os.path.join("datasets-oxpet-rewritten", "train","images.h5"),os.path.join("datasets-oxpet-rewritten", "train","binary.h5"),os.path.join("datasets-oxpet-rewritten", "train","bboxes.h5"),os.path.join("datasets-oxpet-rewritten", "train","masks.h5"),False,False)
+    # training_data = Oxpet_Dataset(os.path.join("datasets-oxpet", "train","images.h5"),os.path.join("datasets-oxpet", "train","binary.h5"),os.path.join("datasets-oxpet", "train","bboxes.h5"),os.path.join("datasets-oxpet", "train","masks.h5"),False,False,False)
+    ox_dataloader = DataLoader(training_data, batch_size=16, shuffle= True,num_workers=8)
+    # training_data.__getitem__(0)
+    for i in range(10):
+        a = time.time()
+        for i, data in enumerate(ox_dataloader):
+            pass
+        b = time.time()
+        print(b-a)
