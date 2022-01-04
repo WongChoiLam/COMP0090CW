@@ -43,7 +43,7 @@ class _DecoderBlock(nn.Module):
 
 
 class UNet(nn.Module):
-    def __init__(self):
+    def __init__(self, n_class):
         super(UNet, self).__init__()
         self.enc1 = _EncoderBlock(3, 64)
         self.enc2 = _EncoderBlock(64, 128)
@@ -61,7 +61,7 @@ class UNet(nn.Module):
             nn.BatchNorm2d(64),
             nn.ReLU(inplace=True),
         )
-        self.final = nn.Conv2d(64, 1, kernel_size=1)
+        self.final = nn.Conv2d(64, n_class, kernel_size=1)
 
     def forward(self, x):
         enc1 = self.enc1(x)

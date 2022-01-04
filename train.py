@@ -14,9 +14,11 @@ if __name__ == '__main__':
     # validset = Oxpet_Dataset(os.path.join("datasets-oxpet", "val","images.h5"),os.path.join("datasets-oxpet", "val","binary.h5"),os.path.join("datasets-oxpet", "val","bboxes.h5"),os.path.join("datasets-oxpet", "val","masks.h5"), require_binary=False, require_bbox=False)
     # validloader = DataLoader(validset, batch_size=batch_size, shuffle= True,num_workers=4)
 
-    net = UNet()
+    # net = UNet(1)
+    net = UNet(2)
 
-    criterion = torch.nn.BCEWithLogitsLoss()
+    # criterion = torch.nn.BCEWithLogitsLoss()
+    criterion = torch.nn.CrossEntropyLoss()
     optimizer = optim.Adam(net.parameters(), lr=0.001)
 
     for epoch in range(2):  # loop over the dataset multiple times
@@ -31,7 +33,10 @@ if __name__ == '__main__':
 
             # forward + backward + optimize
             outputs = net(inputs)
-            loss = criterion(outputs, labels)
+
+            # Uncomment the following if use cross entropy loss
+            loss = criterion(outputs, torch.squeeze(labels))
+            # loss = criterion(outputs, labels)
             loss.backward()
             optimizer.step()
 

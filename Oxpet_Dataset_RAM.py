@@ -32,8 +32,7 @@ class Oxpet_Dataset(Dataset):
             result.append(bboxes)
 
         if self.require_masks:
-            masks = torch.tensor(self.mask[idx][()].astype('float32')).permute(2,0,1)/255.0
-            masks[masks != 0] = 1
+            masks = torch.tensor(self.mask[idx][()].astype('int64')).permute(2,0,1)
             result.append(masks)
         
         return result
