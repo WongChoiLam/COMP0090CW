@@ -2,11 +2,11 @@ import h5py
 import os
 
 def rewrite_h5py(dataset_path):
-    os.mkdir(f'{dataset_path}-rewritten')
+    os.makedirs(f'{dataset_path}-rewritten',exist_ok=True)
     for directory in os.listdir(f'{dataset_path}'):
         if directory.endswith('md'):
             continue
-        os.mkdir(os.path.join(f'{dataset_path}-rewritten',directory))
+        os.makedirs(os.path.join(f'{dataset_path}-rewritten',directory),exist_ok=True)
         for file in os.listdir(os.path.join(dataset_path,directory)):
             all_data = None
             with h5py.File(os.path.join(dataset_path,directory,file),"r") as f:
