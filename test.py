@@ -11,13 +11,12 @@ if __name__ == '__main__':
     ## cifar-10 dataset
     batch_size = 1
 
-    testset = Oxpet_Dataset(os.path.join("datasets-oxpet", "test","images.h5"),os.path.join("datasets-oxpet", "test","binary.h5"),os.path.join("datasets-oxpet", "test","bboxes.h5"),os.path.join("datasets-oxpet", "test","masks.h5"), require_binary=False, require_bbox=False)
-    testloader = DataLoader(testset, batch_size=batch_size, shuffle= True,num_workers=4)
+    testset = Oxpet_Dataset(os.path.join("datasets-oxpet-rewritten", "test","images.h5"),os.path.join("datasets-oxpet-rewritten", "test","binary.h5"),os.path.join("datasets-oxpet-rewritten", "test","bboxes.h5"),os.path.join("datasets-oxpet-rewritten", "test","masks.h5"), require_binary=False, require_bbox=False)
+    testloader = DataLoader(testset, batch_size=batch_size, shuffle= True,num_workers=0)
     dataiter = iter(testloader)
 
-
     ## load the trained model
-    model = UNet()
+    model = UNet(1)
     model.load_state_dict(torch.load('saved_model.pt'))
 
 
