@@ -1,3 +1,4 @@
+
 import torch.nn as nn
 import torch
 import torchvision
@@ -5,7 +6,7 @@ import torchvision
 class DiceLoss(nn.Module):
 
     'DiceLoss is adapted from https://www.kaggle.com/bigironsphere/loss-function-library-keras-pytorch'
-
+    
     def __init__(self, weight=None, size_average=True):
         super(DiceLoss, self).__init__()
 
@@ -99,4 +100,3 @@ if __name__ == '__main__':
     boxes_res = Evaluation_bboxes(model, images, targets)
     # mask_res = Evaluation_mask(model,images, targets)
     print(boxes_res)
-    
