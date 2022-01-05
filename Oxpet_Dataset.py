@@ -43,20 +43,22 @@ if __name__ == '__main__':
     import time
     import matplotlib.pyplot as plt
 
-    training_data = Oxpet_Dataset(os.path.join("datasets-oxpet-rewritten", "train","images.h5"),os.path.join("datasets-oxpet-rewritten", "train","binary.h5"),os.path.join("datasets-oxpet-rewritten", "train","bboxes.h5"),os.path.join("datasets-oxpet-rewritten", "train","masks.h5"))
+    training_data = Oxpet_Dataset(os.path.join("datasets-oxpet-rewritten", "train","images.h5"),os.path.join("datasets-oxpet-rewritten", "train","binary.h5"),os.path.join("datasets-oxpet-rewritten", "train","bboxes.h5"),os.path.join("datasets-oxpet-rewritten", "train","masks.h5"),False,False)
     # training_data = Oxpet_Dataset(os.path.join("datasets-oxpet", "train","images.h5"),os.path.join("datasets-oxpet", "train","binary.h5"),os.path.join("datasets-oxpet", "train","bboxes.h5"),os.path.join("datasets-oxpet", "train","masks.h5"),False,False,False)
     ox_dataloader = DataLoader(training_data, batch_size=16, shuffle= True,num_workers=8)
 
-    data = training_data.__getitem__(1)
-    plt.imshow(data[0].permute(1,2,0))
-    plt.savefig('test.png')
-    print(data[1])
-    print(data[2])
-    plt.imshow(data[3].permute(1,2,0).squeeze())
-    plt.savefig('test1.png')
+    # data = training_data.__getitem__(1)
+    # plt.imshow(data[0].permute(1,2,0))
+    # plt.savefig('test.png')
+    # print(data[1])
+    # print(data[2])
+    # plt.imshow(data[3].permute(1,2,0).squeeze())
+    # plt.savefig('test1.png')
+
     for i in range(10):
         a = time.time()
         for i, data in enumerate(ox_dataloader):
-            pass
-        b = time.time()
-        print(b-a)
+            b = time.time()
+            print(b-a)
+            a=b
+        

@@ -13,7 +13,8 @@ if __name__ == '__main__':
 
     batch_size = 20
     trainset = Oxpet_Dataset(os.path.join("datasets-oxpet-rewritten", "train","images.h5"),os.path.join("datasets-oxpet-rewritten", "train","binary.h5"),os.path.join("datasets-oxpet-rewritten", "train","bboxes.h5"),os.path.join("datasets-oxpet-rewritten", "train","masks.h5"),False,False)
-    trainloader = DataLoader(trainset, batch_size=batch_size, shuffle= True,num_workers=0)
+    trainloader = DataLoader(trainset, batch_size=batch_size, shuffle= True,num_workers=4)
+    
     # validset = Oxpet_Dataset(os.path.join("datasets-oxpet", "val","images.h5"),os.path.join("datasets-oxpet", "val","binary.h5"),os.path.join("datasets-oxpet", "val","bboxes.h5"),os.path.join("datasets-oxpet", "val","masks.h5"), require_binary=False, require_bbox=False)
     # validloader = DataLoader(validset, batch_size=batch_size, shuffle= True,num_workers=4)
 

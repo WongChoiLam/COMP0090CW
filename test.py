@@ -12,7 +12,7 @@ if __name__ == '__main__':
     batch_size = 1
 
     testset = Oxpet_Dataset(os.path.join("datasets-oxpet-rewritten", "test","images.h5"),os.path.join("datasets-oxpet-rewritten", "test","binary.h5"),os.path.join("datasets-oxpet-rewritten", "test","bboxes.h5"),os.path.join("datasets-oxpet-rewritten", "test","masks.h5"), require_binary=False, require_bbox=False)
-    testloader = DataLoader(testset, batch_size=batch_size, shuffle= True,num_workers=0)
+    testloader = DataLoader(testset, batch_size=batch_size, shuffle= True,num_workers=4)
     dataiter = iter(testloader)
 
     ## load the trained model
