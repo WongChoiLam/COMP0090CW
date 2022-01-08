@@ -58,7 +58,7 @@ if __name__ == '__main__':
     for i in range(10):
         a = time.time()
         for i, data in enumerate(ox_dataloader):
-            b = time.time()
-            print(b-a)
-            a=b
+            pass
+        b = time.time()
+        print(b-a)
         
