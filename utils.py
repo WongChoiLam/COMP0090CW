@@ -55,10 +55,10 @@ def Evaluation_mask(model, training_data, targets):
     # masks_hat[masks_hat >= 0.5] = 1
     # masks_hat[masks_hat < 0.5] = 0
     masks_hat = torch.argmax(prediction['out'],dim=1)
-    Accuracy = torch.sum(masks_hat == targets)/((torch.sum(masks_hat == targets))+torch.sum(masks_hat != targets))
+    accuracy = torch.sum(masks_hat == targets)/((torch.sum(masks_hat == targets))+torch.sum(masks_hat != targets))
     precision = torch.sum(masks_hat[targets == 1] == 1)/torch.sum(targets == 1)
-    recall = torch.sum(masks_hat[targets == 1] == 1)/(torch.sum(masks_hat[targets == 1] == 1) + torch.sum(masks_hat[targets == 1] == 0))
-    F_1 = (torch.sum(masks_hat[targets == 1] == 1))/(torch.sum(masks_hat[targets == 1] == 1) + 0.5 * (torch.sum(masks_hat[targets == 1] == 1) + torch.sum(masks_hat[targets == 1] == 0)))
+    recall = torch.sum(masks_hat[targets == 1] == 1)/(torch.sum(masks_hat[targets == 1] == 1) + torch.sum(masks_hat[targets == 0] == 1))
+    F_1 = 2*precision*recall/(precision+recall)
 
     # confusion_matrix = torch.zeros(2,2)
     # for row1,row2 in zip(targets.reshape(-1,1),masks_hat.reshape(-1,1)):
@@ -68,7 +68,7 @@ def Evaluation_mask(model, training_data, targets):
     # recall = confusion_matrix[1,1]/(confusion_matrix[1,1] + confusion_matrix[1,0])
     # Accuracy = (confusion_matrix[0,0]+confusion_matrix[1,1])/targets.view(-1).size(0)
     # F_1 = 2 * confusion_matrix[1,1]/(2 * confusion_matrix[1,1] + confusion_matrix[0,1]+confusion_matrix[1,0])
-    return precision,recall,Accuracy,F_1
+    return precision,recall,accuracy,F_1
 
 if __name__ == '__main__':
 
