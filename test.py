@@ -5,6 +5,7 @@ import torch
 import matplotlib.pyplot as plt
 import torchvision.transforms as transforms
 import os
+import torchvision
 
 if __name__ == '__main__':
 
