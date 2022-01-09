@@ -4,4 +4,4 @@ Reproduce ISIC-2018 Transfer Learning Results
 2. Extract ISIC2018_Task1-2_Training_Input and ISIC2018_Task1_Training_GroundTruth into ./ISIC
 3. Run ISIC2018_Dataset.py
 4. Run ISIC2018_Transfer.py
-5. ISIC_pretrained.pt is model pretrained on ISIC-2018 dataset, ISIC_trainsferred.pt is model further trained on Oxpet, ISIC_stats.csv contains the training and validation loss when transfer learning and metrics on test set.
+5. ISIC_pretrained.pt is the model pretrained on ISIC-2018 dataset, ISIC_transferred.pt is the model after transfer learning, ISIC_stats.csv contains the training and validation loss when transfer learning and metrics on test set.
