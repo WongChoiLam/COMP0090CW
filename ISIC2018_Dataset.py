@@ -35,7 +35,7 @@ def ISIC_to_h5py(dataset_path):
                 continue
             max_counter += 1
 
-        # Replacee file name
+        # Replace file name
         real_counter = 0
         file_counter = 0
         while real_counter < max_counter:
