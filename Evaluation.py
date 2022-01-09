@@ -39,22 +39,23 @@ def Evaluation_mask(model,training_data, targets):
     masks_hat = torch.softmax(masks_hat,dim=1)       
     masks_hat = getBinaryTensor(masks_hat)
     confusion_matrix = torch.zeros(2,2)
-    area_pre = masks_hat.sum()
-    area_tar = targets.sum()
-    inter_area  = 0
+    IoU = []
     for tar,mask in zip(targets,masks_hat):
+        area_pre = mask.sum()
+        area_tar = tar.sum()
+        inter_area = 0
         for row1,row2 in zip(tar.squeeze(),mask.squeeze()):
             for t,m in zip(row1,row2):
                 if t == m:  
                     inter_area += 1
                     confusion_matrix[t.long(),m.long()] += 1
-    union = area_pre + area_tar- inter_area
-    IoU = inter_area/union
+        union = area_pre + area_tar - inter_area
+        IoU.append(inter_area/union)
     precision = confusion_matrix[1,1]/(confusion_matrix[1,1]+confusion_matrix[0,1])
     recall = confusion_matrix[1,1]/(confusion_matrix[1,1] + confusion_matrix[1,0])
     Accuracy = (confusion_matrix[0,0]+confusion_matrix[1,1])/targets.view(-1).size(0)
     F_1 = 2 * confusion_matrix[1,1]/(2 * confusion_matrix[1,1] + confusion_matrix[0,1]+confusion_matrix[1,0])
-    return precision,recall,Accuracy,F_1,IoU
+    return precision,recall,Accuracy,F_1,IoU/targets.size(0)
 
 def getBinaryTensor(input, boundary = 0.5):
     one = torch.ones_like(input)
