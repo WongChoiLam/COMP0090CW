@@ -45,8 +45,8 @@ if __name__ == '__main__':
 
     training_data = Oxpet_Dataset(os.path.join("datasets-oxpet-rewritten", "train","images.h5"),os.path.join("datasets-oxpet-rewritten", "train","binary.h5"),os.path.join("datasets-oxpet-rewritten", "train","bboxes.h5"),os.path.join("datasets-oxpet-rewritten", "train","masks.h5"),False,False)
     # training_data = Oxpet_Dataset(os.path.join("datasets-oxpet", "train","images.h5"),os.path.join("datasets-oxpet", "train","binary.h5"),os.path.join("datasets-oxpet", "train","bboxes.h5"),os.path.join("datasets-oxpet", "train","masks.h5"),False,False,False)
-    ox_dataloader = DataLoader(training_data, batch_size=16, shuffle= True,num_workers=8)
-    print(training_data.__getitem__(0)[1])
+    ox_dataloader = DataLoader(training_data, batch_size=16, shuffle= True)
+
     # data = training_data.__getitem__(1)
     # plt.imshow(data[0].permute(1,2,0))
     # plt.savefig('test.png')
