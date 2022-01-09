@@ -174,7 +174,7 @@ if __name__ == '__main__':
     stat = [float(accuracy/(i+1)), float(recall/(i+1)), float(precision/(i+1)), float(F_1/(i+1)), float(IOU/(i+1))]
 
     # Output the stats
-    with open('ISIC_stats', 'w') as f:
+    with open('ISIC_stats.csv', 'w') as f:
 
         write = csv.writer(f)
         write.writerow(train_loss)
