@@ -7,37 +7,53 @@ import torchvision.transforms as T
 import utils
 from torch.utils.data import DataLoader
 from Oxpet_Dataset import Oxpet_Dataset
+from torchvision.models.segmentation.deeplabv3 import DeepLabHead
 
-def deeplabv3_resnet50_fit(trainset):
+def deeplabv3_resnet50_fit(trainset, model_name):
 
     batch_size = 8
     trainloader = DataLoader(trainset, batch_size=batch_size,shuffle=True)
     transforms = torch.nn.Sequential(
-            T.RandomHorizontalFlip(p=0.5),
+            T.RandomHorizontalFlip(p=1),
         )
     # initialize model
-    model = torchvision.models.segmentation.deeplabv3_resnet50(pretrained=False,num_classes=1)
-    # loss function
-    criterion = utils.DiceLoss()
-    # criterion = torch.nn.CrossEntropyLoss()
+    model = torchvision.models.segmentation.deeplabv3_resnet50(pretrained=False, num_classes=2)
+
+    # Transfer Learning
+    # model = torchvision.models.segmentation.deeplabv3_resnet50(pretrained=True)
+    # for param in model.parameters():
+    #     param.requires_grad=False
+    # model.classifier = DeepLabHead(2048, 2)
+
     # optimizer
-    optimizer = optim.Adam(model.parameters(), lr=0.001)
+    params = [p for p in model.parameters() if p.requires_grad]
+    optimizer = optim.Adam(params, lr=0.001)
+
+    # loss function
+    criterion = torch.nn.CrossEntropyLoss()
+
     # runing machine
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model.to(device)
     # fit
-    for epoch in range(10):
+    for epoch in range(2):
         running_loss = 0
         for i, train_data in enumerate(trainloader, 0):
             inputs, labels = train_data
-            # labels = labels.squeeze()
-            # labels = labels.long()
-            inputs, labels = inputs.to(device), labels.to(device)   
+            labels = labels.squeeze()
+
+            inputs, labels = inputs.to(device), labels.to(device)  
+
             # data augmentation
-            inputs = transforms(inputs)
+            p = torch.rand(1)
+            if p >=0.5:
+                inputs = transforms(inputs)
+                labels = transforms(labels)
+
             # zero the parameter gradients
             optimizer.zero_grad()
             # forward + backward + optimize
+
             outputs = model(inputs)['out']
             loss = criterion(outputs, labels)
             loss.backward()
@@ -45,7 +61,7 @@ def deeplabv3_resnet50_fit(trainset):
             optimizer.step()   
             running_loss += loss.item()
         print(running_loss/trainset.__len__())
-    torch.save(model.state_dict(), 'saved_model-dice.pt')
+    torch.save(model.state_dict(), f'{model_name}.pt')
     return model
 
 dataset = Oxpet_Dataset(
@@ -71,13 +87,13 @@ if __name__ == '__main__':
     
     data_test_loader = DataLoader(dataset_test,batch_size=8,shuffle=True)
     
-    # model = deeplabv3_resnet50_fit(dataset)
-    # model = model.to(device)
-    # model.eval()
-
-    model = torchvision.models.segmentation.deeplabv3_resnet50(pretrained=False,num_classes=2).to(device)
-    model.load_state_dict(torch.load('saved_model-ce.pt'))
+    model = deeplabv3_resnet50_fit(dataset,'BaseLine')
+    model = model.to(device)
     model.eval()
+
+    # model = torchvision.models.segmentation.deeplabv3_resnet50(pretrained=False,num_classes=2).to(device)
+    # model.load_state_dict(torch.load('BaseLine.pt'))
+    # model.eval()
     
     # res = model(images)['out']
     # res = res.argmax(1)
@@ -100,6 +116,7 @@ if __name__ == '__main__':
     print(f'recall={recall/(i+1)}')
     print(f'precision={precision/(i+1)}')
     print(f'f1={F_1/(i+1)}')
+
     # print(images[2].shape)
     # r1 = Image.fromarray(images[2].cpu().numpy())
     # r2 = Image.fromarray(res[2].byte().cpu().numpy()).resize((256, 256))
