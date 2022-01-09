@@ -1,0 +1,6 @@
+Reproduce ISIC-2018 Transfer Learning Results
+=============================================================
+1. Download the ISIC-2018 DataSet here https://challenge.isic-archive.com/data/#2018
+2. Extract ISIC2018_Task1-2_Training_Input and ISIC2018_Task1_Training_GroundTruth into ./ISIC
+3. Run ISIC2018_Dataset.py
+4. Run ISIC2018_Transfer.py
