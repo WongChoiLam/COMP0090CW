@@ -20,19 +20,19 @@ class Oxpet_Dataset(Dataset):
 
     def __getitem__(self, idx):
 
-        img = torch.Tensor(self.img[f'{idx}'][()].astype('float32')).permute(2,0,1)/255.0
+        img = torch.FloatTensor(self.img[f'{idx}'][()]).permute(2,0,1)/255.0
         result = [img]
 
         if self.require_binary:
-            binary = torch.Tensor(self.binary[f'{idx}'][()].astype('int64'))
+            binary = torch.LongTensor(self.binary[f'{idx}'][()])
             result.append(binary)
         
         if self.require_bbox:
-            bboxes = torch.Tensor(self.bbox[f'{idx}'][()].astype('float32'))
+            bboxes = torch.FloatTensor(self.bbox[f'{idx}'][()])
             result.append(bboxes)
 
         if self.require_masks:
-            masks = torch.Tensor(self.mask[f'{idx}'][()].astype('int64')).permute(2,0,1)
+            masks = torch.LongTensor(self.mask[f'{idx}'][()]).permute(2,0,1)
             result.append(masks)
         
         return result
@@ -46,7 +46,7 @@ if __name__ == '__main__':
     training_data = Oxpet_Dataset(os.path.join("datasets-oxpet-rewritten", "train","images.h5"),os.path.join("datasets-oxpet-rewritten", "train","binary.h5"),os.path.join("datasets-oxpet-rewritten", "train","bboxes.h5"),os.path.join("datasets-oxpet-rewritten", "train","masks.h5"),False,False)
     # training_data = Oxpet_Dataset(os.path.join("datasets-oxpet", "train","images.h5"),os.path.join("datasets-oxpet", "train","binary.h5"),os.path.join("datasets-oxpet", "train","bboxes.h5"),os.path.join("datasets-oxpet", "train","masks.h5"),False,False,False)
     ox_dataloader = DataLoader(training_data, batch_size=16, shuffle= True,num_workers=8)
-
+    print(training_data.__getitem__(0)[1])
     # data = training_data.__getitem__(1)
     # plt.imshow(data[0].permute(1,2,0))
     # plt.savefig('test.png')
