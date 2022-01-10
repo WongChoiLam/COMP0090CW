@@ -57,6 +57,10 @@ def train(trainset, val_set, batch_size, num_epochs, device, num_classes, model_
         print('Start pretraining model...')
 
     # fit
+
+    if pretrained_model:
+        min_valid_loss = float('inf')
+
     for epoch in range(num_epochs):
         running_loss = 0
         for i, train_data in enumerate(trainloader, 0):
@@ -98,11 +102,19 @@ def train(trainset, val_set, batch_size, num_epochs, device, num_classes, model_
                 loss = criterion(outputs, labels) 
                 running_loss += loss.item()  
 
-            print(f'epoch {epoch+1}, val loss = {running_loss/(i+1)}')          
+            # Save the best model
+            if running_loss/(i+1) < min_valid_loss:
+                print(f'epoch {epoch+1}, validation loss = {running_loss/(i+1)}, lowest validation loss = True, save model')  
+                torch.save(model.state_dict(), f'{model_name}.pt')    
+                min_valid_loss = running_loss/(i+1)
+            else:
+                print(f'epoch {epoch+1}, validation loss = {running_loss/(i+1)}, lowest validation loss = False, do not save model')
+
             valid_loss.append(running_loss/(i+1))
 
-    #Save Model
-    torch.save(model.state_dict(), f'{model_name}.pt')
+    if not pretrained_model:
+        #Save Model
+        torch.save(model.state_dict(), f'{model_name}.pt')
 
     if pretrained_model:
         print(f'Transfer Learned model has been saved to {model_name}.pt\n')
@@ -173,12 +185,15 @@ if __name__ == '__main__':
 
     stat = [float(accuracy/(i+1)), float(recall/(i+1)), float(precision/(i+1)), float(F_1/(i+1)), float(IOU/(i+1))]
 
+    stat_name = 'ISIC'
+    stat_file_name = 'ISIC_stats.csv'
+
     # Output the stats
-    with open('ISIC_stats.csv', 'w') as f:
+    with open(stat_file_name, 'w') as f:
 
         write = csv.writer(f)
         write.writerow(train_loss)
         write.writerow(valid_loss)
         write.writerow(stat)
     
-    print('ISIC statistics has been saved to ISIC_stats.csv')
+    print(f'{stat_name} statistics has been saved to {stat_file_name}')

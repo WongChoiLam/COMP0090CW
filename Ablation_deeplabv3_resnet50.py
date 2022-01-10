@@ -31,7 +31,7 @@ def K_Fold_split(data_len, k):
         
     return indices_list
 
-def train(trainloader, validloader, num_epochs, device, freeze):
+def train(trainloader, validloader, num_epochs, device, freeze, save, model_name):
 
     transforms = torch.nn.Sequential(
             T.RandomHorizontalFlip(p=1),
@@ -56,6 +56,9 @@ def train(trainloader, validloader, num_epochs, device, freeze):
 
     train_loss = []
     valid_loss = []
+
+    if save:
+        min_valid_loss = float('inf')
 
     # fit
     for epoch in range(num_epochs):
@@ -98,9 +101,22 @@ def train(trainloader, validloader, num_epochs, device, freeze):
             loss = criterion(outputs, labels) 
             running_loss += loss.item()  
 
-        print(f'epoch {epoch+1}, val loss = {running_loss/(i+1)}')          
+        if save:
+            
+            # Save the best model
+            if running_loss/(i+1) < min_valid_loss:
+                print(f'epoch {epoch+1}, validation loss = {running_loss/(i+1)}, lowest validation loss = True, save model')  
+                torch.save(model.state_dict(), f'{model_name}.pt')    
+                min_valid_loss = running_loss/(i+1)
+            else:
+                print(f'epoch {epoch+1}, validation loss = {running_loss/(i+1)}, lowest validation loss = False, do not save model')
+        else:
+            print(f'epoch {epoch+1}, val loss = {running_loss/(i+1)}')          
         valid_loss.append(running_loss/(i+1))    
 
+    if save:
+        print(f'Model has been saved to {model_name}.pt\n')  
+        
     return model, train_loss, valid_loss
 
 if __name__ == '__main__':
@@ -141,13 +157,13 @@ if __name__ == '__main__':
 
         # Experiment with freezed version
         print(f'Kfold {kfold+1}, freezed version')
-        model, train_loss, valid_loss = train(trainloader, validloader, num_epochs, device, True)
+        model, train_loss, valid_loss = train(trainloader, validloader, num_epochs, device, True, False, None)
         train_losses_freeze.append(train_loss)
         valid_losses_freeze.append(valid_loss)
         print('\n')
         # Experiment with unfreezed version
         print(f'Kfold {kfold+1}, unfreezed version')
-        model, train_loss, valid_loss = train(trainloader, validloader, num_epochs, device, False)
+        model, train_loss, valid_loss = train(trainloader, validloader, num_epochs, device, False, False, None)
         train_losses_unfreeze.append(train_loss)
         valid_losses_unfreeze.append(valid_loss)
         print('\n')
@@ -157,8 +173,7 @@ if __name__ == '__main__':
     testloader = DataLoader(oxpet_test, batch_size=batch_size,shuffle=True)
 
     # Use Whole training set to train and see if the trend agrees with cross validation
-    model_unfreeze, train_loss, valid_loss = train(trainloader, validloader, num_epochs, device, False)
-    torch.save(model_unfreeze, 'unfreeze_transfer.pt')
+    model_unfreeze, train_loss, valid_loss = train(trainloader, validloader, num_epochs, device, False, True, 'COCO_transferred_unfreeze')
 
     # Load the trained freezed version
     model_freeze = torchvision.models.segmentation.deeplabv3_resnet50(pretrained=True)
@@ -198,8 +213,11 @@ if __name__ == '__main__':
     stat_unfreeze = [float(accuracy_unfreeze/(i+1)), float(recall_unfreeze/(i+1)), float(precision_unfreeze/(i+1)), float(F_1_unfreeze/(i+1)), float(IOU_unfreeze/(i+1))]
     stat_freeze = [float(accuracy_freeze/(i+1)), float(recall_freeze/(i+1)), float(precision_freeze/(i+1)), float(F_1_freeze/(i+1)), float(IOU_freeze/(i+1))]
 
+    stat_name = 'Ablation'
+    stat_file_name = 'Ablation_stats.csv'
+
     # Output the stats
-    with open('ablation_stats.csv', 'w') as f:
+    with open(stat_file_name, 'w') as f:
 
         write = csv.writer(f)
         write.writerows(train_losses_freeze)
@@ -211,4 +229,4 @@ if __name__ == '__main__':
         write.writerow(stat_unfreeze)
         write.writerow(stat_freeze)
     
-    print('ablation statistics has been saved to ablation_stats.csv')
+    print(f'{stat_name} statistics has been saved to {stat_file_name}')
