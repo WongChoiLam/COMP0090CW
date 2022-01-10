@@ -38,6 +38,8 @@ def train(trainset, val_set, batch_size, num_epochs, device, model_name):
     train_loss = []
     valid_loss = []
 
+    min_valid_loss = float('inf')
+
     # fit
     for epoch in range(num_epochs):
         running_loss = 0
@@ -78,11 +80,19 @@ def train(trainset, val_set, batch_size, num_epochs, device, model_name):
             outputs = model(inputs)['out']
             loss = criterion(outputs, labels) 
             running_loss += loss.item()  
-
-        print(f'epoch {epoch+1}, val loss = {running_loss/(i+1)}')          
+            
+        # Save the best model
+        if running_loss/(i+1) < min_valid_loss:
+            print(f'epoch {epoch+1}, validation loss = {running_loss/(i+1)}, lowest validation loss = True, save model')  
+            torch.save(model.state_dict(), f'{model_name}.pt')    
+            min_valid_loss = running_loss/(i+1)
+        else:
+            print(f'epoch {epoch+1}, validation loss = {running_loss/(i+1)}, lowest validation loss = False, do not save model')
+      
         valid_loss.append(running_loss/(i+1))    
 
-    torch.save(model.state_dict(), f'{model_name}.pt')
+    print(f'Model has been saved to {model_name}.pt\n')    
+
     return model, train_loss, valid_loss
 
 if __name__ == '__main__':
@@ -141,12 +151,15 @@ if __name__ == '__main__':
 
     stat = [float(accuracy/(i+1)), float(recall/(i+1)), float(precision/(i+1)), float(F_1/(i+1)), float(IOU/(i+1))]
 
+    stat_name = 'COCO'
+    stat_file_name = 'COCO_stats.csv'
+
     # Output the stats
-    with open('COCO_stats.csv', 'w') as f:
+    with open(stat_file_name, 'w') as f:
 
         write = csv.writer(f)
         write.writerow(train_loss)
         write.writerow(valid_loss)
         write.writerow(stat)
     
-    print('COCO statistics has been saved to COCO_stats.csv')
+    print(f'{stat_name} statistics has been saved to {stat_file_name}')

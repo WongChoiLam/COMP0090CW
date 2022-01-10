@@ -35,6 +35,8 @@ def train(trainset, val_set, batch_size, num_epochs, device, model_name):
     train_loss = []
     valid_loss = []
 
+    min_valid_loss = float('inf')
+
     # fit
     for epoch in range(num_epochs):
         running_loss = 0
@@ -76,10 +78,18 @@ def train(trainset, val_set, batch_size, num_epochs, device, model_name):
             loss = criterion(outputs, labels) 
             running_loss += loss.item()  
 
-        print(f'epoch {epoch+1}, val loss = {running_loss/(i+1)}')          
-        valid_loss.append(running_loss/(i+1))    
+        # Save the best model
+        if running_loss/(i+1) < min_valid_loss:
+            print(f'epoch {epoch+1}, validation loss = {running_loss/(i+1)}, lowest validation loss = True, save model')  
+            torch.save(model.state_dict(), f'{model_name}.pt')    
+            min_valid_loss = running_loss/(i+1)
+        else:
+            print(f'epoch {epoch+1}, validation loss = {running_loss/(i+1)}, lowest validation loss = False, do not save model')
 
-    torch.save(model.state_dict(), f'{model_name}.pt')
+        valid_loss.append(running_loss/(i+1))
+
+    print(f'Model has been saved to {model_name}.pt\n')  
+
     return model, train_loss, valid_loss
 
 if __name__ == '__main__':
@@ -112,7 +122,7 @@ if __name__ == '__main__':
     )
 
     device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
-    num_epochs = 1
+    num_epochs = 10
     batch_size = 8
    
     model, train_loss, valid_loss = train(oxpet_train, oxpet_valid, batch_size, num_epochs, device, 'BaseLine')
@@ -137,13 +147,16 @@ if __name__ == '__main__':
     print(f'IOU={IOU/(i+1)}\n')
 
     stat = [float(accuracy/(i+1)), float(recall/(i+1)), float(precision/(i+1)), float(F_1/(i+1)), float(IOU/(i+1))]
+    
+    stat_name = 'BaseLine'
+    stat_file_name = 'BaseLine_stats.csv'
 
     # Output the stats
-    with open('BaseLine_stats.csv', 'w') as f:
+    with open(stat_file_name, 'w') as f:
 
         write = csv.writer(f)
         write.writerow(train_loss)
         write.writerow(valid_loss)
         write.writerow(stat)
     
-    print('BaseLine statistics has been saved to BaseLine_stats.csv')
+    print(f'{stat_name} statistics has been saved to {stat_file_name}')
