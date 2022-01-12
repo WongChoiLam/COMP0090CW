@@ -152,7 +152,7 @@ if __name__ == '__main__':
     stat_file_name = 'BaseLine_stats.csv'
 
     # Output the stats
-    with open(stat_file_name, 'w') as f:
+    with open(stat_file_name, 'w', newline='') as f:
 
         write = csv.writer(f)
         write.writerow(train_loss)
