@@ -33,7 +33,7 @@ Reproduce Ablation Study Results
 =============================================================
 1. Run Transfer_deeplabv3_resnet50.py to get COCO_transferred.pt which will be used in ablation study
 2. Run Ablation_deeplabv3_resnet50.py
-3. COCO_transferred_unfreeze.pt is the model trained with unfreezed transfer learning, Ablation_stats.csv contains the training and validation loss for each fold, the training and validation loss when performing unfreezed transfer learning. The metrics on test set with both freezed version and unfreezed version.
+3. COCO_transferred_unfreeze.pt is the model trained with unfreezed transfer learning, Ablation_stats.csv contains the average training and validation loss for cross validation, the training and validation loss when performing unfreezed transfer learning. The metrics on test set with both freezed version and unfreezed version.
 --------------------------------------------------------------------------------------------------------
 
 =============================================================
