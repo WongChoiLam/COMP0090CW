@@ -145,10 +145,10 @@ if __name__ == '__main__':
     batch_size = 8
 
     # Ablation Study
-    train_losses_freeze = []
-    valid_losses_freeze = []
-    train_losses_unfreeze = []
-    valid_losses_unfreeze = []
+    train_losses_freeze = [0 for _ in range(num_epochs)]
+    valid_losses_freeze = [0 for _ in range(num_epochs)]
+    train_losses_unfreeze = [0 for _ in range(num_epochs)]
+    valid_losses_unfreeze = [0 for _ in range(num_epochs)]
     for kfold, (train_idxs, valid_idxs) in enumerate(K_Fold_split(oxpet_train.__len__(), 3)):
         train_subsampler = torch.utils.data.SubsetRandomSampler(train_idxs)
         valid_subsampler = torch.utils.data.SubsetRandomSampler(valid_idxs)
@@ -158,14 +158,15 @@ if __name__ == '__main__':
         # Experiment with freezed version
         print(f'Kfold {kfold+1}, freezed version')
         model, train_loss, valid_loss = train(trainloader, validloader, num_epochs, device, True, False, None)
-        train_losses_freeze.append(train_loss)
-        valid_losses_freeze.append(valid_loss)
+        train_losses_freeze = [val1+val2 for val1, val2 in zip(train_losses_freeze, train_loss)]
+        valid_losses_freeze = [val1+val2 for val1, val2 in zip(valid_losses_freeze, valid_loss)]
         print('\n')
+        
         # Experiment with unfreezed version
         print(f'Kfold {kfold+1}, unfreezed version')
         model, train_loss, valid_loss = train(trainloader, validloader, num_epochs, device, False, False, None)
-        train_losses_unfreeze.append(train_loss)
-        valid_losses_unfreeze.append(valid_loss)
+        train_losses_unfreeze = [val1+val2 for val1, val2 in zip(train_losses_unfreeze, train_loss)]
+        valid_losses_unfreeze = [val1+val2 for val1, val2 in zip(valid_losses_unfreeze, valid_loss)]
         print('\n')
 
     trainloader = DataLoader(oxpet_test, batch_size=batch_size,shuffle=True)
@@ -217,13 +218,13 @@ if __name__ == '__main__':
     stat_file_name = 'Ablation_stats.csv'
 
     # Output the stats
-    with open(stat_file_name, 'w') as f:
+    with open(stat_file_name, 'w', newline='') as f:
 
         write = csv.writer(f)
-        write.writerows(train_losses_freeze)
-        write.writerows(valid_losses_freeze)
-        write.writerows(train_losses_unfreeze)
-        write.writerows(valid_losses_unfreeze)
+        write.writerow([val/3 for val in train_losses_freeze])
+        write.writerow([val/3 for val in valid_losses_freeze])
+        write.writerow([val/3 for val in train_losses_unfreeze])
+        write.writerow([val/3 for val in valid_losses_unfreeze])
         write.writerow(train_loss)
         write.writerow(valid_loss)
         write.writerow(stat_unfreeze)
