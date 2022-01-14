@@ -44,4 +44,17 @@ Reproduce ISIC-2018 Transfer Learning Results
 3. Run ISIC2018_Dataset.py to convert disk files into high performance h5py
 4. Run ISIC2018_Transfer.py
 5. ISIC_pretrained.pt is the model pretrained on ISIC-2018 dataset, ISIC_transferred.pt is the model after transfer learning, ISIC_stats.csv contains the training and validation loss when transfer learning and metrics on test set.
+<<<<<<< HEAD
+--------------------------------------------------------------------------------------------------------
+
+=============================================================
+Reproduce Cityscapes Transfer Learning Results
+=============================================================
+1. Go to Cityscapes dataset website https://www.cityscapes-dataset.com/downloads/ (login needed), and download 'gtFine_trainvaltest.zip (241MB)' and 'leftImg8bit_trainvaltest.zip (11GB)'.
+2. Extract the two zip files and put the extracted folder 'gtFine' and 'leftImg8bit' into ./dataset-cityscapes
+3. Run cityscapes_dataset.py to convert disk files into high performance h5py
+4. Run cityscapes_transfer.py
+5. cityscapes_pretrained.pt is the model pretrained on Cityscapes dataset, cityscapes_transferred.pt is the model after transfer learning, cityscapes_stats.csv contains the training and validation loss when transfer learning and metrics on test set.
+=======
+>>>>>>> main
 --------------------------------------------------------------------------------------------------------
