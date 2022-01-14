@@ -13,59 +13,52 @@ class Oxpet_Dataset(Dataset):
         if self.require_masks:  self.mask = h5py.File(masks_path,"r")
 
         self.img = h5py.File(img_path,"r")
-        self.length = self.img['/images'].__len__()
+        self.length = len(list(self.img))
 
     def __len__(self):
         return self.length
 
     def __getitem__(self, idx):
 
-        img = torch.tensor(self.img['/images'][idx][()].astype('float32')).permute(2,0,1)/255.0
+        img = torch.FloatTensor(self.img[f'{idx}'][()]).permute(2,0,1)/255.0
         result = [img]
 
         if self.require_binary:
-            binary = torch.tensor(self.binary['/binary'][idx][()].astype('int64'))
+            binary = torch.LongTensor(self.binary[f'{idx}'][()])
             result.append(binary)
         
         if self.require_bbox:
-            bboxes = torch.tensor(self.bbox['/bboxes'][idx][()].astype('float32'))
+            bboxes = torch.FloatTensor(self.bbox[f'{idx}'][()])
             result.append(bboxes)
 
         if self.require_masks:
-            masks = torch.tensor(self.mask['/masks'][idx][()].astype('float32')).permute(2,0,1)/255.0
-            masks[masks != 0] = 1
+            masks = torch.LongTensor(self.mask[f'{idx}'][()]).permute(2,0,1)
             result.append(masks)
         
         return result
 
 if __name__ == '__main__':
     from torch.utils.data import DataLoader
-    import numpy as np
     import os
     import time
+    import matplotlib.pyplot as plt
 
-    # a = time.time()
-    training_data = Oxpet_Dataset(os.path.join("datasets-oxpet", "train","images.h5"),os.path.join("datasets-oxpet", "train","binary.h5"),os.path.join("datasets-oxpet", "train","bboxes.h5"),os.path.join("datasets-oxpet", "train","masks.h5"))
-    ox_dataloader = DataLoader(training_data, batch_size=50, shuffle= True,num_workers=4)
-    # b = time.time()
-    # print(b-a)
-    # a = time.time()
-    # training_data_RAM = Oxpet_Dataset_True(os.path.join("datasets-oxpet", "train","images.h5"),os.path.join("datasets-oxpet", "train","binary.h5"),os.path.join("datasets-oxpet", "train","bboxes.h5"),os.path.join("datasets-oxpet", "train","masks.h5"))
-    # ox_dataloader_RAM = DataLoader(training_data_RAM, batch_size=8, shuffle= True,num_workers=8)
-    # b = time.time()
-    # print(b-a)
-    a = time.time()
-    for i, data in enumerate(ox_dataloader, 0):
-        if i == 5:
-            break
-        pass
-    d = time.time()
-    print(d-a)
-    # print(d-c)
-    # c = time.time()
-    # for i, data in enumerate(ox_dataloader_RAM, 0):
-    #     if i == 5:
-    #         break
-    #     pass
-    # d = time.time()
-    # print(d-c)
+    training_data = Oxpet_Dataset(os.path.join("datasets-oxpet-rewritten", "train","images.h5"),os.path.join("datasets-oxpet-rewritten", "train","binary.h5"),os.path.join("datasets-oxpet-rewritten", "train","bboxes.h5"),os.path.join("datasets-oxpet-rewritten", "train","masks.h5"),False,False)
+    # training_data = Oxpet_Dataset(os.path.join("datasets-oxpet", "train","images.h5"),os.path.join("datasets-oxpet", "train","binary.h5"),os.path.join("datasets-oxpet", "train","bboxes.h5"),os.path.join("datasets-oxpet", "train","masks.h5"),False,False,False)
+    ox_dataloader = DataLoader(training_data, batch_size=16, shuffle= True)
+
+    # data = training_data.__getitem__(1)
+    # plt.imshow(data[0].permute(1,2,0))
+    # plt.savefig('test.png')
+    # print(data[1])
+    # print(data[2])
+    # plt.imshow(data[3].permute(1,2,0).squeeze())
+    # plt.savefig('test1.png')
+
+    for i in range(10):
+        a = time.time()
+        for i, data in enumerate(ox_dataloader):
+            pass
+        b = time.time()
+        print(b-a)
+        
