@@ -160,7 +160,7 @@ if __name__ == "__main__":
 
     start = time.time()
 
-    # Train the model with ISIC
+    # Train the model with Cityscapes
     train(trainset, None, batch_size, num_epochs, device, 34, 'cityscapes_pretrained', None)
 
     end = time.time()
