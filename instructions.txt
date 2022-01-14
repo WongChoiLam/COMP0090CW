@@ -1,0 +1,57 @@
+=============================================================
+Convert Original h5py to High Performance h5py to fit Oxpet_Dataset.py
+=============================================================
+1. Manage data into the following architecture:
+datasets-oxpet -> train, val, test
+train -> bboxes.h5, binary.h5, images.h5, masks.h5
+val -> bboxes.h5, binary.h5, images.h5, masks.h5
+test -> bboxes.h5, binary.h5, images.h5, masks.h5
+2. Run setup.py
+3. High performance h5py then contained in folder datasets-oxpet-rewritten where the arthitecture looks like:
+datasets-oxpet-rewritten -> train, val, test
+train -> bboxes.h5, binary.h5, images.h5, masks.h5
+val -> bboxes.h5, binary.h5, images.h5, masks.h5
+test -> bboxes.h5, binary.h5, images.h5, masks.h5
+--------------------------------------------------------------------------------------------------------
+
+=============================================================
+Reproduce BaseLine Results
+=============================================================
+1. Run Baseline_deeplabv3_resnet50.py
+2. BaseLine.pt is the model trained, BaseLine_stats.csv contains the training and validation loss and metrics on test set.
+--------------------------------------------------------------------------------------------------------
+
+=============================================================
+Reproduce COCO Transfer Learning Results
+=============================================================
+1. Run Transfer_deeplabv3_resnet50.py
+2. COCO_transferred.pt is the model trained, COCO_stats.csv contains the training and validation loss and metrics on test set.
+--------------------------------------------------------------------------------------------------------
+
+=============================================================
+Reproduce Ablation Study Results
+=============================================================
+1. Run Transfer_deeplabv3_resnet50.py to get COCO_transferred.pt which will be used in ablation study
+2. Run Ablation_deeplabv3_resnet50.py
+3. COCO_transferred_unfreeze.pt is the model trained with unfreezed transfer learning, Ablation_stats.csv contains the average training and validation loss for cross validation, the training and validation loss when performing unfreezed transfer learning. The metrics on test set with both freezed version and unfreezed version.
+--------------------------------------------------------------------------------------------------------
+
+=============================================================
+Reproduce ISIC-2018 Transfer Learning Results
+=============================================================
+1. Download the ISIC-2018 DataSet here https://challenge.isic-archive.com/data/#2018
+2. Extract ISIC2018_Task1-2_Training_Input and ISIC2018_Task1_Training_GroundTruth into ./ISIC
+3. Run ISIC2018_Dataset.py to convert disk files into high performance h5py
+4. Run ISIC2018_Transfer.py
+5. ISIC_pretrained.pt is the model pretrained on ISIC-2018 dataset, ISIC_transferred.pt is the model after transfer learning, ISIC_stats.csv contains the training and validation loss when transfer learning and metrics on test set.
+--------------------------------------------------------------------------------------------------------
+
+=============================================================
+Reproduce Cityscapes Transfer Learning Results
+=============================================================
+1. Go to Cityscapes dataset website https://www.cityscapes-dataset.com/downloads/ (login needed), and download 'gtFine_trainvaltest.zip (241MB)' and 'leftImg8bit_trainvaltest.zip (11GB)'.
+2. Extract the two zip files and put the extracted folder 'gtFine' and 'leftImg8bit' into ./dataset-cityscapes
+3. Run cityscapes_dataset.py to convert disk files into high performance h5py
+4. Run cityscapes_transfer.py
+5. cityscapes_pretrained.pt is the model pretrained on Cityscapes dataset, cityscapes_transferred.pt is the model after transfer learning, cityscapes_stats.csv contains the training and validation loss when transfer learning and metrics on test set.
+--------------------------------------------------------------------------------------------------------
