@@ -1,4 +1,10 @@
 =============================================================
+Choice of Oxpet Dataset
+=============================================================
+We utilise the new data: https://weisslab.cs.ucl.ac.uk/WEISSTeaching/datasets/-/tree/oxpet/data_new
+-------------------------------------------------------------
+
+=============================================================
 Convert Original h5py to High Performance h5py to fit Oxpet_Dataset.py
 =============================================================
 1. Manage data into the following architecture:
@@ -12,29 +18,29 @@ datasets-oxpet-rewritten -> train, val, test
 train -> bboxes.h5, binary.h5, images.h5, masks.h5
 val -> bboxes.h5, binary.h5, images.h5, masks.h5
 test -> bboxes.h5, binary.h5, images.h5, masks.h5
---------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------
 
 =============================================================
 Reproduce BaseLine Results
 =============================================================
 1. Run Baseline_deeplabv3_resnet50.py
 2. BaseLine.pt is the model trained, BaseLine_stats.csv contains the training and validation loss and metrics on test set.
---------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------
 
 =============================================================
 Reproduce COCO Transfer Learning Results
 =============================================================
 1. Run Transfer_deeplabv3_resnet50.py
 2. COCO_transferred.pt is the model trained, COCO_stats.csv contains the training and validation loss and metrics on test set.
---------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------
 
 =============================================================
 Reproduce Ablation Study Results
 =============================================================
 1. Run Transfer_deeplabv3_resnet50.py to get COCO_transferred.pt which will be used in ablation study
 2. Run Ablation_deeplabv3_resnet50.py
-3. COCO_transferred_unfreeze.pt is the model trained with unfreezed transfer learning, Ablation_stats.csv contains the average training and validation loss for cross validation, the training and validation loss when performing unfreezed transfer learning. The metrics on test set with both freezed version and unfreezed version.
---------------------------------------------------------------------------------------------------------
+3. COCO_transferred_unfreeze.pt is the model trained without freezing transfer learning, Ablation_stats.csv contains the average training and validation loss for cross validation (not used in our report), the training and validation loss when performing nonfrozon transfer learning. The metrics on test set with both frozon version and unfrozon version.
+-------------------------------------------------------------
 
 =============================================================
 Reproduce ISIC-2018 Transfer Learning Results
@@ -44,7 +50,7 @@ Reproduce ISIC-2018 Transfer Learning Results
 3. Run ISIC2018_Dataset.py to convert disk files into high performance h5py
 4. Run ISIC2018_Transfer.py
 5. ISIC_pretrained.pt is the model pretrained on ISIC-2018 dataset, ISIC_transferred.pt is the model after transfer learning, ISIC_stats.csv contains the training and validation loss when transfer learning and metrics on test set.
---------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------
 
 =============================================================
 Reproduce Cityscapes Transfer Learning Results
@@ -54,7 +60,7 @@ Reproduce Cityscapes Transfer Learning Results
 3. Run cityscapes_dataset.py to convert disk files into high performance h5py
 4. Run cityscapes_transfer.py
 5. cityscapes_pretrained.pt is the model pretrained on Cityscapes dataset, cityscapes_transferred.pt is the model after transfer learning, cityscapes_stats.csv contains the training and validation loss when transfer learning and metrics on test set.
---------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------
 
 =============================================================
 Convert MAS3K dataset to High Performance h5py to fit MAS3K_Dataset.py
@@ -66,7 +72,7 @@ test -> Image, Mask
 2. Run MAS3K_Dataset.py
 3. High performance h5py then contained in folder MAS3K where the arthitecture looks like:
 MAS3K -> TrainImages.h5, TrainMasks.h5
---------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------
 
 =============================================================
 Reproduce MAS3K Transfer Learning Results
@@ -76,4 +82,4 @@ Reproduce MAS3K Transfer Learning Results
 3. Run MAS3K_Dataset.py to convert disk files into high performance h5py
 4. Run MAS3K_Transfer.py
 5. MAS3K_transferred.pt is the model trained, MAS3K_stats.csv contains the training and validation loss and metrics on test set.
---------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------
