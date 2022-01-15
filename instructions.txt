@@ -76,7 +76,7 @@ MAS3K -> TrainImages.h5, TrainMasks.h5
 =============================================================
 Reproduce MAS3K Transfer Learning Results
 =============================================================
-1. Download the MAS3K DataSet here https://github.com/LinLi-DL/MAS
+1. Download the MAS3K DataSet here https://drive.google.com/file/d/10fiud0WDFp11RUWZGCaMC2xCcJgOBB68/view?usp=sharing
 2. Extract train, test images and train, test masks and into ./MAS3K
 3. Run MAS3K_Dataset.py to convert disk files into high performance h5py
 4. Run MAS3K_Transfer.py
