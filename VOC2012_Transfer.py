@@ -46,9 +46,9 @@ class PascalVOCSegmentation(torchvision.datasets.VOCSegmentation):
 
 def train(trainset, val_set, batch_size, num_epochs, device, num_classes, model_name, pretrained_model):
 
-    trainloader = DataLoader(trainset, batch_size=batch_size,shuffle=True)
+    trainloader = DataLoader(trainset, batch_size=batch_size,shuffle=True, drop_last=True)
     if pretrained_model:
-        validloader = DataLoader(val_set, batch_size=batch_size,shuffle=True)
+        validloader = DataLoader(val_set, batch_size=batch_size,shuffle=True, drop_last=True)
 
     transforms = torch.nn.Sequential(
             T.RandomHorizontalFlip(p=1),
@@ -162,7 +162,7 @@ if __name__ == '__main__':
     VOC_train_dataset = PascalVOCSegmentation(
         root='VOC2012',
         year='2012',
-        image_set='train',
+        image_set='trainval',
         download=True,
         transform=T.ToTensor(),
         target_transform=target_transform
@@ -202,7 +202,7 @@ if __name__ == '__main__':
     )
 
     device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
-    num_epochs = 1
+    num_epochs = 10
     batch_size = 8
 
     # Train the model with VOC
