@@ -45,10 +45,9 @@ def plot_baseline_COCO_ablation(base_path,COCO_path,ablation_path):
     plt.ylabel('loss value')
     plt.show()
 
-def plots_baseline_OEQ(base_path,COCO_path,ablation_path,city_path,ISIC_path,MAS3K_path):
+def plots_baseline_OEQ(base_path,VOC_path,city_path,ISIC_path,MAS3K_path):
     Baseline_stats  = read(base_path)
-    COCO_stats  = read(COCO_path)
-    Ablation_stats  = read(ablation_path)
+    VOC_stats  = read(VOC_path)
     city_stats = read(city_path)
     ISIC_stats = read(ISIC_path)
     MAS3K_stats = read(MAS3K_path)
@@ -56,11 +55,8 @@ def plots_baseline_OEQ(base_path,COCO_path,ablation_path,city_path,ISIC_path,MAS
     train_loss_Baseline = np.array(Baseline_stats[0],dtype=float)
     valid_loss_Baseline = np.array(Baseline_stats[1],dtype=float)
 
-    train_loss_COCO = np.array(COCO_stats[0],dtype=float)
-    valid_loss_COCO = np.array(COCO_stats[1],dtype=float)
-    
-    train_loss_Ablation = np.array(Ablation_stats[4],dtype=float)
-    valid_loss_Ablation = np.array(Ablation_stats[5],dtype=float)
+    train_loss_VOC = np.array(VOC_stats[0],dtype=float)
+    valid_loss_VOC = np.array(VOC_stats[1],dtype=float)
 
     train_loss_city = np.array(city_stats[0],dtype=float)
     valid_loss_city = np.array(city_stats[1],dtype=float)
@@ -76,21 +72,18 @@ def plots_baseline_OEQ(base_path,COCO_path,ablation_path,city_path,ISIC_path,MAS
     plt.figure()
     l1, = plt.plot(x, train_loss_Baseline, color='C1', linewidth=1.0, linestyle='-')
     l2, = plt.plot(x, valid_loss_Baseline, color='C1', linewidth=1.0, linestyle=':')
-    l3, = plt.plot(x, train_loss_COCO, color='C2', linewidth=1.0, linestyle='-')
-    l4, = plt.plot(x, valid_loss_COCO, color='C2', linewidth=1.0, linestyle=':')
-    l5, = plt.plot(x, train_loss_Ablation, color='C3', linewidth=1.0, linestyle='-')
-    l6, = plt.plot(x, valid_loss_Ablation, color='C3', linewidth=1.0, linestyle=':')
-    l7, = plt.plot(x, train_loss_city, color='C4', linewidth=1.0, linestyle='-')
-    l8, = plt.plot(x, valid_loss_city, color='C4', linewidth=1.0, linestyle=':')
-    l9, = plt.plot(x, train_loss_ISIC, color='C5', linewidth=1.0, linestyle='-')
-    l10, = plt.plot(x, valid_loss_ISIC, color='C5', linewidth=1.0, linestyle=':')
-    l11, = plt.plot(x, train_loss_MAS3K, color='C6', linewidth=1.0, linestyle='-')
-    l12, = plt.plot(x, valid_loss_MAS3K, color='C6', linewidth=1.0, linestyle=':')
+    l3, = plt.plot(x, train_loss_VOC, color='C2', linewidth=1.0, linestyle='-')
+    l4, = plt.plot(x, valid_loss_VOC, color='C2', linewidth=1.0, linestyle=':')
+    l5, = plt.plot(x, train_loss_city, color='C3', linewidth=1.0, linestyle='-')
+    l6, = plt.plot(x, valid_loss_city, color='C3', linewidth=1.0, linestyle=':')
+    l7, = plt.plot(x, train_loss_ISIC, color='C4', linewidth=1.0, linestyle='-')
+    l8, = plt.plot(x, valid_loss_ISIC, color='C4', linewidth=1.0, linestyle=':')
+    l9, = plt.plot(x, train_loss_MAS3K, color='C5', linewidth=1.0, linestyle='-')
+    l10, = plt.plot(x, valid_loss_MAS3K, color='C5', linewidth=1.0, linestyle=':')
     
-    plt.legend(handles=[l1,l2,l3,l4,l5,l6,l7,l8,l9,l10,l11,l12], 
+    plt.legend(handles=[l1,l2,l3,l4,l5,l6,l7,l8,l9,l10], 
             labels=['Baseline: training loss', 'Baseline: validation loss',
-                    'COCO transfer: training loss','COCO transfer: validation loss',
-                    'Ablation: training loss','Ablation: validation loss',
+                    'VOC2012: training loss','VOC2012: validation loss',
                     'Cityscapes: training loss','Cityscapes: validation loss',
                     'ISIC2018: training loss','ISIC2018: validation loss',
                     'MAS3K: training loss','MAS3K: validation loss'],  loc='best')
@@ -102,5 +95,5 @@ def plots_baseline_OEQ(base_path,COCO_path,ablation_path,city_path,ISIC_path,MAS
     plt.show()
       
 # plot_baseline_COCO_ablation('Baseline_stats.csv','COCO_stats.csv','Ablation_stats.csv')    
-plots_baseline_OEQ('Baseline_stats.csv','COCO_stats.csv','Ablation_stats.csv','cityscapes_stats.csv','ISIC_stats.csv','MAS3K_stats.csv')
+plots_baseline_OEQ('Baseline_stats.csv','VOC_stats.csv','cityscapes_stats.csv','ISIC_stats.csv','MAS3K_stats.csv')
 
