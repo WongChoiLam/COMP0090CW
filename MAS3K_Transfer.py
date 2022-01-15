@@ -7,7 +7,6 @@ import torchvision.transforms as T
 import utils
 from torch.utils.data import DataLoader
 from Oxpet_Dataset import Oxpet_Dataset
-# from ISIC2018_Dataset import ISIC2018_Dataset
 from torchvision.models.segmentation.deeplabv3 import DeepLabHead
 import csv
 
@@ -39,9 +38,6 @@ def train(trainset, val_set, batch_size, num_epochs, device, num_classes, model_
         
         # Add new classifier
         model.classifier = DeepLabHead(2048, 2)
-        
-    else:
-        model.eval()
 
     # optimizer
     params = [p for p in model.parameters() if p.requires_grad]
@@ -85,9 +81,6 @@ def train(trainset, val_set, batch_size, num_epochs, device, num_classes, model_
 
             # forward + backward + optimize
             outputs = model(inputs)['out']
-            if outputs.shape[0] == 1:
-                print(outputs.shape,labels.shape)
-                continue
             loss = criterion(outputs, labels)
             loss.backward()
             
@@ -133,7 +126,6 @@ def train(trainset, val_set, batch_size, num_epochs, device, num_classes, model_
 
 if __name__ == '__main__':
 
-    # ISIC_dataset = ISIC2018_Dataset(os.path.join('ISIC-rewritten', 'ISIC2018_Task1-2_Training_Input.h5'), os.path.join('ISIC-rewritten', 'ISIC2018_Task1_Training_GroundTruth.h5'))
     oxpet_train = Oxpet_Dataset(
         os.path.join("datasets-oxpet-rewritten", "train","images.h5"),
         os.path.join("datasets-oxpet-rewritten", "train","binary.h5"), 
@@ -161,21 +153,19 @@ if __name__ == '__main__':
         require_masks=True
     )
 
-    MAS3K_train = MAS3K_Dataset('MAS3K\\TrainImage.h5', 'MAS3K\\TrainMask.h5', True)
-    # MAS3K_test = MAS3K_Dataset('MAS3K\\TestImage.h5', 'MAS3K\\TestMask.h5', True)
+    TrainIfilePath = os.path.join('MAS3K','TrainImage.h5')
+    TrainMfilePath = os.path.join('MAS3K','TrainMask.h5')
 
+    MAS3K_train = MAS3K_Dataset(TrainIfilePath, TrainMfilePath, True)
+    
     device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
     # device = torch.device('cpu')
     num_epochs = 10
-    batch_size = 2
+    batch_size = 8
 
-    # trainset, val_set, batch_size, num_epochs, device, num_classes, model_name, pretrained_model
     # Train the model with MAS3K
     train(MAS3K_train, None, batch_size, num_epochs, device, 2, 'MAS3K_pretrained', None)
 
-    # # Train the model with ISIC
-    # train(ISIC_dataset, None, batch_size, num_epochs, device, 2, 'ISIC_pretrained', None)
-    
     # Do transfer Learning with oxpet
     MAS3K_transferred, train_loss, valid_loss = train(oxpet_train, oxpet_valid, batch_size, num_epochs, device, 2, 'MAS3K_transferred', 'MAS3K_pretrained.pt')
     
