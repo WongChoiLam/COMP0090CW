@@ -21,8 +21,8 @@ def plot_baseline_COCO_ablation(base_path,COCO_path,ablation_path):
     train_loss_COCO = np.array(COCO_stats[0],dtype=float)
     valid_loss_COCO = np.array(COCO_stats[1],dtype=float)
     
-    train_loss_Ablation = np.array(Ablation_stats[4],dtype=float)
-    valid_loss_Ablation = np.array(Ablation_stats[5],dtype=float)
+    train_loss_Ablation = np.array(Ablation_stats[0],dtype=float)
+    valid_loss_Ablation = np.array(Ablation_stats[1],dtype=float)
 
     x = np.linspace(1, len(Baseline_stats[0]), len(Baseline_stats[0]))
     
@@ -40,7 +40,6 @@ def plot_baseline_COCO_ablation(base_path,COCO_path,ablation_path):
                     'Ablation: training loss','Ablation: validation loss'],  loc='best')
 
     plt.xlim((0, len(Baseline_stats[0])+1))
-
     plt.xlabel('num of epoches')
     plt.ylabel('loss value')
     plt.show()
@@ -89,7 +88,6 @@ def plots_baseline_OEQ(base_path,VOC_path,city_path,ISIC_path,MAS3K_path):
                     'MAS3K: training loss','MAS3K: validation loss'],  loc='best')
 
     plt.xlim((0, len(Baseline_stats[0])+1))
-
     plt.xlabel('num of epoches')
     plt.ylabel('loss value')
     plt.show()
