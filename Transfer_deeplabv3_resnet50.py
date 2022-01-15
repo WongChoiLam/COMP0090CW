@@ -10,6 +10,9 @@ from Oxpet_Dataset import Oxpet_Dataset
 from torchvision.models.segmentation.deeplabv3 import DeepLabHead
 import csv
 
+# Due to pytorch's pre-trained model manual https://pytorch.org/vision/stable/models.html
+normalize = T.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+
 def train(trainset, val_set, batch_size, num_epochs, device, model_name):
 
     trainloader = DataLoader(trainset, batch_size=batch_size,shuffle=True)
@@ -45,6 +48,7 @@ def train(trainset, val_set, batch_size, num_epochs, device, model_name):
         running_loss = 0
         for i, train_data in enumerate(trainloader, 0):
             inputs, labels = train_data
+            inputs = normalize(inputs)
             labels = labels.squeeze()
 
             inputs, labels = inputs.to(device), labels.to(device)  
@@ -72,6 +76,7 @@ def train(trainset, val_set, batch_size, num_epochs, device, model_name):
         running_loss = 0
         for i, val_data in enumerate(validloader):
             inputs, labels = val_data
+            inputs = normalize(inputs)
             labels = labels.squeeze()
 
             inputs, labels = inputs.to(device), labels.to(device)  
@@ -135,6 +140,7 @@ if __name__ == '__main__':
     precision, recall, accuracy, F_1, IOU = 0, 0, 0, 0, 0
     for i, data in enumerate(testloader):
         images,targets = data
+        images = normalize(images)
         images,targets = images.to(device),targets.to(device)
         p, r, a, f, iou = utils.Evaluation_mask(model, images, targets.squeeze())
         precision += p
