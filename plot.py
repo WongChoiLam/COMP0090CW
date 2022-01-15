@@ -40,8 +40,8 @@ def plot_baseline_COCO_ablation(base_path,COCO_path,ablation_path):
                     'Ablation'],  loc='best')
 
     plt.xlim((0, len(Baseline_stats[0])+1))
-    plt.xlabel('num of epoches')
-    plt.ylabel('loss value')
+    plt.xlabel('Num of epoches')
+    plt.ylabel('Loss value')
     plt.savefig('Ablation.png')
 
 def plots_baseline_OEQ(base_path,VOC_path,city_path,ISIC_path,MAS3K_path):
@@ -92,11 +92,11 @@ def plots_baseline_OEQ(base_path,VOC_path,city_path,ISIC_path,MAS3K_path):
                     'VOC2012',
                     'Cityscapes',
                     'ISIC2018',
-                    'MAS3K'], loc='best')
+                    'MAS3K'], loc='upper right')
 
     plt.xlim((0, len(Baseline_stats[0])+1))
-    plt.xlabel('num of epoches')
-    plt.ylabel('loss value')
+    plt.xlabel('Num of epoches')
+    plt.ylabel('Loss value')
     plt.savefig('OEQ.png')
 
 if __name__ == '__main__':
