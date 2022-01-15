@@ -34,15 +34,15 @@ def plot_baseline_COCO_ablation(base_path,COCO_path,ablation_path):
     l5, = plt.plot(x, train_loss_Ablation, color='C5', linewidth=1.0, linestyle='-')
     l6, = plt.plot(x, valid_loss_Ablation, color='C5', linewidth=1.0, linestyle=':')
     
-    plt.legend(handles=[l1,l2,l3,l4,l5,l6], 
-            labels=['Baseline: training loss', 'Baseline: validation loss',
-                    'COCO transfer: training loss','COCO transfer: validation loss',
-                    'Ablation: training loss','Ablation: validation loss'],  loc='best')
+    plt.legend(handles=[l1,l3,l5], 
+            labels=['Baseline',
+                    'COCO',
+                    'Ablation'],  loc='best')
 
     plt.xlim((0, len(Baseline_stats[0])+1))
     plt.xlabel('num of epoches')
     plt.ylabel('loss value')
-    plt.show()
+    plt.savefig('Ablation.png')
 
 def plots_baseline_OEQ(base_path,VOC_path,city_path,ISIC_path,MAS3K_path):
     Baseline_stats  = read(base_path)
@@ -80,18 +80,25 @@ def plots_baseline_OEQ(base_path,VOC_path,city_path,ISIC_path,MAS3K_path):
     l9, = plt.plot(x, train_loss_MAS3K, color='C5', linewidth=1.0, linestyle='-')
     l10, = plt.plot(x, valid_loss_MAS3K, color='C5', linewidth=1.0, linestyle=':')
     
-    plt.legend(handles=[l1,l2,l3,l4,l5,l6,l7,l8,l9,l10], 
-            labels=['Baseline: training loss', 'Baseline: validation loss',
-                    'VOC2012: training loss','VOC2012: validation loss',
-                    'Cityscapes: training loss','Cityscapes: validation loss',
-                    'ISIC2018: training loss','ISIC2018: validation loss',
-                    'MAS3K: training loss','MAS3K: validation loss'],  loc='best')
+    # plt.legend(handles=[l1,l2,l3,l4,l5,l6,l7,l8,l9,l10], 
+    #         labels=['Baseline: training loss', 'Baseline: validation loss',
+    #                 'VOC2012: training loss','VOC2012: validation loss',
+    #                 'Cityscapes: training loss','Cityscapes: validation loss',
+    #                 'ISIC2018: training loss','ISIC2018: validation loss',
+    #                 'MAS3K: training loss','MAS3K: validation loss'], loc='best')
+
+    plt.legend(handles=[l1,l3,l5,l7,l9], 
+            labels=['Baseline',
+                    'VOC2012',
+                    'Cityscapes',
+                    'ISIC2018',
+                    'MAS3K'], loc='best')
 
     plt.xlim((0, len(Baseline_stats[0])+1))
     plt.xlabel('num of epoches')
     plt.ylabel('loss value')
-    plt.show()
-      
-# plot_baseline_COCO_ablation('Baseline_stats.csv','COCO_stats.csv','Ablation_stats.csv')    
-plots_baseline_OEQ('Baseline_stats.csv','VOC_stats.csv','cityscapes_stats.csv','ISIC_stats.csv','MAS3K_stats.csv')
+    plt.savefig('OEQ.png')
 
+if __name__ == '__main__':
+    plot_baseline_COCO_ablation('BaseLine_stats.csv','COCO_stats.csv','Ablation_stats.csv')    
+    plots_baseline_OEQ('BaseLine_stats.csv','VOC_stats.csv','cityscapes_stats.csv','ISIC_stats.csv','MAS3K_stats.csv')

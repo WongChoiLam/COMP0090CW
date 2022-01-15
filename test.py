@@ -1,4 +1,3 @@
-from UNet import UNet
 from Oxpet_Dataset import Oxpet_Dataset
 from torch.utils.data import DataLoader
 import torch
@@ -18,20 +17,19 @@ if __name__ == '__main__':
     dataiter = iter(testloader)
 
     ## load the baseline model
-    model = torchvision.models.segmentation.deeplabv3_resnet50(pretrained=False,num_classes=2)
-    model.load_state_dict(torch.load('BaseLine.pt'))
-    model.eval()
+    # model = torchvision.models.segmentation.deeplabv3_resnet50(pretrained=False,num_classes=2)
+    # model.load_state_dict(torch.load('ISIC_transferred.pt'))
+    # model.eval()
 
     # load the transfer learning model
-    # model = torchvision.models.segmentation.deeplabv3_resnet50(pretrained=True)
-    # model.classifier = DeepLabHead(2048, 2)
-    # model.load_state_dict(torch.load('Transfer.pt'))
-    # model.eval()
+    model = torchvision.models.segmentation.deeplabv3_resnet50(pretrained=True)
+    model.classifier = DeepLabHead(2048, 2)
+    model.load_state_dict(torch.load('COCO_transferred_unfreeze.pt'))
+    model.eval()
 
     ## inference
     images, labels = dataiter.next()
-    outputs = torch.softmax(model(images)['out'],dim=1)
-    outputs = torch.argmax(outputs,dim=1)
+    outputs = torch.argmax(model(images)['out'],dim=1)
 
     plt.figure(figsize=(20,10))
     for i in range(batch_size):
