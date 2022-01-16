@@ -86,7 +86,7 @@ Reproduce MAS3K Transfer Learning Results
 2. Extract train, test images and train, test masks and into ./MAS3K
 3. Run MAS3K_Dataset.py to convert disk files into high performance h5py
 4. Run MAS3K_Transfer.py
-5. MAS3K_transferred.pt is the model trained, MAS3K_stats.csv contains the training and validation loss and metrics on test set.
+5. MAS3K_pretrained.pt is the model pretrained on MAS3K dataset, MAS3K_transferred.pt is the model after transfer learning, MAS3K_stats.csv contains the training and validation loss when transfer learning and metrics on test set.
 -------------------------------------------------------------
 
 =============================================================
