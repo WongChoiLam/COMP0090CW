@@ -157,9 +157,9 @@ if __name__ == '__main__':
     TrainMfilePath = os.path.join('MAS3K','TrainMask.h5')
 
     MAS3K_train = MAS3K_Dataset(TrainIfilePath, TrainMfilePath, True)
-    
+
     device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
-    # device = torch.device('cpu')
+
     num_epochs = 10
     batch_size = 8
 
