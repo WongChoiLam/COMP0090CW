@@ -1,4 +1,10 @@
 =============================================================
+Install dependencies
+=============================================================
+pip install -r requirements.txt
+-------------------------------------------------------------
+
+=============================================================
 Choice of Oxpet Dataset
 =============================================================
 We utilise the new data: https://weisslab.cs.ucl.ac.uk/WEISSTeaching/datasets/-/tree/oxpet/data_new
@@ -88,7 +94,7 @@ Reproduce Plots for Losses
 =============================================================
 1. Make sure obtain Ablation_stats.csv, BaseLine_stats.csv, cityscapes_stats.csv, COCO_stats.csv, ISIC_stats.csv, MAS3K_stats.csv, VOC_stats.csv in the current repository.
 2. Run plot.py
-3. OEQ.png is the loss for OEQ, Ablation.png is the loss for ablation.
+3. Loss.png is the loss.
 -------------------------------------------------------------
 
 =============================================================
@@ -96,5 +102,5 @@ Reproduce Output Visualisation
 =============================================================
 1. Make sure obtain BaseLine.pt, cityscapes_transferred.pt, COCO_transferred.pt, COCO_transferred_unfreeze.pt, ISIC_transferred.pt, MAS3K_transferred.pt, VOC_transferred.pt in the current repository.
 2. Run visualisation.py
-3. OEQ_visual.png is the visualisation for OEQ, Ablation_visual.png is the visualisation for ablation.
+3. Visualisation.png is the visualisation.
 -------------------------------------------------------------

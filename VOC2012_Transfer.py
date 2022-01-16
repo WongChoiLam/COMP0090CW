@@ -157,8 +157,10 @@ def train(trainset, val_set, batch_size, num_epochs, device, num_classes, model_
     return model, train_loss, valid_loss
 
 if __name__ == '__main__':
+    
     def target_transform(x):
         return (T.ToTensor()(x) >= 0.5).type(torch.LongTensor)
+
     VOC_train_dataset = PascalVOCSegmentation(
         root='VOC2012',
         year='2012',
@@ -167,13 +169,7 @@ if __name__ == '__main__':
         transform=T.ToTensor(),
         target_transform=target_transform
     )
-    print(len(VOC_train_dataset))
-    
-    # show([VOC_train_dataset[0][0], 
-    #     torch.stack([torch.argmax(VOC_train_dataset[0][1], dim=0)] * 3, dim=0) / torch.max(VOC_train_dataset[0][1])])
-    # plt.show()
-    # torch.argmax(torch.VOC_train_dataset[0][0])
-    # plt.show()
+
     oxpet_train = Oxpet_Dataset(
         os.path.join("datasets-oxpet-rewritten", "train","images.h5"),
         os.path.join("datasets-oxpet-rewritten", "train","binary.h5"), 

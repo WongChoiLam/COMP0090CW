@@ -19,7 +19,6 @@ def rewrite_h5py(dataset_path):
 if __name__ == '__main__':
     import time
     print('Rewrite Started...')
-    # for f in files:
     start = time.time()
     rewrite_h5py('datasets-oxpet')
     end = time.time()
