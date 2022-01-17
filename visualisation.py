@@ -34,7 +34,7 @@ def show(models, origin_images,targets,batch_size):
         plt.imshow(outputs_Baseline[i].reshape(256,256),cmap='gray')
         plt.xticks([])
         plt.yticks([])
-        if i == 0: plt.title('BaseLine', fontsize=20)
+        if i == 0: plt.title('Baseline', fontsize=20)
         plt.subplot(batch_size,9,9*i+3)
         plt.imshow(outputs_COCO[i].reshape(256,256),cmap='gray')
         plt.xticks([])
@@ -69,7 +69,7 @@ def show(models, origin_images,targets,batch_size):
         plt.imshow(targets[i].reshape(256,256),cmap='gray')
         plt.xticks([])
         plt.yticks([])
-        if i == 0: plt.title('target', fontsize=20)
+        if i == 0: plt.title('Target', fontsize=20)
     plt.savefig('Visualisation.png')
 
 def load_models(path):
