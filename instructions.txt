@@ -68,6 +68,12 @@ Reproduce Cityscapes Transfer Learning Results
 -------------------------------------------------------------
 
 =============================================================
+Reproduce PASCAL VOC 2012 Transfer Learning Results
+=============================================================
+1. Run VOC2012_Transfer.py, the dataset is downloaded automatically
+-------------------------------------------------------------
+
+=============================================================
 Convert MAS3K dataset to High Performance h5py to fit MAS3K_Dataset.py
 =============================================================
 1. Manage data into the following architecture:
