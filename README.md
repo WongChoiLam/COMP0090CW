@@ -1,3 +1,3 @@
 # COMP0090CW
 
-See Instruction.txt
+See instructions.txt
