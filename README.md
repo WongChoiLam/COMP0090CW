@@ -1,1 +1,114 @@
 # COMP0090CW
+
+=============================================================
+Install dependencies
+=============================================================
+pip install -r requirements.txt
+-------------------------------------------------------------
+
+=============================================================
+Choice of Oxpet Dataset
+=============================================================
+We utilise the new data: https://weisslab.cs.ucl.ac.uk/WEISSTeaching/datasets/-/tree/oxpet/data_new
+-------------------------------------------------------------
+
+=============================================================
+Convert Original h5py to High Performance h5py to fit Oxpet_Dataset.py
+=============================================================
+1. Manage data into the following architecture:
+datasets-oxpet -> train, val, test
+train -> bboxes.h5, binary.h5, images.h5, masks.h5
+val -> bboxes.h5, binary.h5, images.h5, masks.h5
+test -> bboxes.h5, binary.h5, images.h5, masks.h5
+2. Run setup.py
+3. High performance h5py then contained in folder datasets-oxpet-rewritten where the arthitecture looks like:
+datasets-oxpet-rewritten -> train, val, test
+train -> bboxes.h5, binary.h5, images.h5, masks.h5
+val -> bboxes.h5, binary.h5, images.h5, masks.h5
+test -> bboxes.h5, binary.h5, images.h5, masks.h5
+-------------------------------------------------------------
+
+=============================================================
+Reproduce BaseLine Results
+=============================================================
+1. Run Baseline_deeplabv3_resnet50.py
+2. BaseLine.pt is the model trained, BaseLine_stats.csv contains the training and validation loss and metrics on test set.
+-------------------------------------------------------------
+
+=============================================================
+Reproduce COCO Transfer Learning Results
+=============================================================
+1. Run Transfer_deeplabv3_resnet50.py
+2. COCO_transferred.pt is the model trained, COCO_stats.csv contains the training and validation loss and metrics on test set.
+-------------------------------------------------------------
+
+=============================================================
+Reproduce Ablation Study Results
+=============================================================
+1. Run Ablation_deeplabv3_resnet50.py
+2. COCO_transferred_unfreeze.pt is the model trained, Ablation_stats.csv contains the training and validation loss and metrics on test set.
+-------------------------------------------------------------
+
+=============================================================
+Reproduce ISIC-2018 Transfer Learning Results
+=============================================================
+1. Download the ISIC-2018 DataSet here https://challenge.isic-archive.com/data/#2018
+2. Extract ISIC2018_Task1-2_Training_Input and ISIC2018_Task1_Training_GroundTruth into ./ISIC
+3. Run ISIC2018_Dataset.py to convert disk files into high performance h5py
+4. Run ISIC2018_Transfer.py
+5. ISIC_pretrained.pt is the model pretrained on ISIC-2018 dataset, ISIC_transferred.pt is the model after transfer learning, ISIC_stats.csv contains the training and validation loss when transfer learning and metrics on test set.
+-------------------------------------------------------------
+
+=============================================================
+Reproduce Cityscapes Transfer Learning Results
+=============================================================
+1. Go to Cityscapes dataset website https://www.cityscapes-dataset.com/downloads/ (login needed), and download 'gtFine_trainvaltest.zip (241MB)' and 'leftImg8bit_trainvaltest.zip (11GB)'.
+2. Extract the two zip files and put the extracted folder 'gtFine' and 'leftImg8bit' into ./dataset-cityscapes
+3. Run cityscapes_dataset.py to convert disk files into high performance h5py
+4. Run cityscapes_transfer.py
+5. cityscapes_pretrained.pt is the model pretrained on Cityscapes dataset, cityscapes_transferred.pt is the model after transfer learning, cityscapes_stats.csv contains the training and validation loss when transfer learning and metrics on test set.
+-------------------------------------------------------------
+
+=============================================================
+Reproduce PASCAL VOC 2012 Transfer Learning Results
+=============================================================
+1. Run VOC2012_Transfer.py, the dataset is downloaded automatically
+-------------------------------------------------------------
+
+=============================================================
+Convert MAS3K dataset to High Performance h5py to fit MAS3K_Dataset.py
+=============================================================
+1. Manage data into the following architecture:
+MAS3K -> train, test
+train -> Image, Mask
+test -> Image, Mask
+2. Run MAS3K_Dataset.py
+3. High performance h5py then contained in folder MAS3K where the arthitecture looks like:
+MAS3K -> TrainImages.h5, TrainMasks.h5
+-------------------------------------------------------------
+
+=============================================================
+Reproduce MAS3K Transfer Learning Results
+=============================================================
+1. Download the MAS3K DataSet here https://drive.google.com/file/d/10fiud0WDFp11RUWZGCaMC2xCcJgOBB68/view?usp=sharing
+2. Extract train, test images and train, test masks and into ./MAS3K
+3. Run MAS3K_Dataset.py to convert disk files into high performance h5py
+4. Run MAS3K_Transfer.py
+5. MAS3K_pretrained.pt is the model pretrained on MAS3K dataset, MAS3K_transferred.pt is the model after transfer learning, MAS3K_stats.csv contains the training and validation loss when transfer learning and metrics on test set.
+-------------------------------------------------------------
+
+=============================================================
+Reproduce Plots for Losses
+=============================================================
+1. Make sure obtain Ablation_stats.csv, BaseLine_stats.csv, cityscapes_stats.csv, COCO_stats.csv, ISIC_stats.csv, MAS3K_stats.csv, VOC_stats.csv in the current repository.
+2. Run plot.py
+3. Loss.png is the loss.
+-------------------------------------------------------------
+
+=============================================================
+Reproduce Output Visualisation
+=============================================================
+1. Make sure obtain BaseLine.pt, cityscapes_transferred.pt, COCO_transferred.pt, COCO_transferred_unfreeze.pt, ISIC_transferred.pt, MAS3K_transferred.pt, VOC_transferred.pt in the current repository.
+2. Run visualisation.py
+3. Visualisation.png is the visualisation.
+-------------------------------------------------------------
