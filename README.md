@@ -2,13 +2,12 @@
 
 ## Install dependencies
 -------------------------------------------------------------
-pip install -r requirements.txt
+### pip install -r requirements.txt
 -------------------------------------------------------------
 
+## Choice of Oxpet Dataset
 =============================================================
-Choice of Oxpet Dataset
-=============================================================
-We utilise the new data: https://weisslab.cs.ucl.ac.uk/WEISSTeaching/datasets/-/tree/oxpet/data_new
+### We utilise the new data: https://weisslab.cs.ucl.ac.uk/WEISSTeaching/datasets/-/tree/oxpet/data_new
 -------------------------------------------------------------
 
 =============================================================
