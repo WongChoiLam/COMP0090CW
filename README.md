@@ -6,13 +6,13 @@
 -------------------------------------------------------------
 
 ## Choice of Oxpet Dataset
-=============================================================
+-------------------------------------------------------------
 ### We utilise the new data: https://weisslab.cs.ucl.ac.uk/WEISSTeaching/datasets/-/tree/oxpet/data_new
 -------------------------------------------------------------
 
-=============================================================
+-------------------------------------------------------------
 Convert Original h5py to High Performance h5py to fit Oxpet_Dataset.py
-=============================================================
+-------------------------------------------------------------
 1. Manage data into the following architecture:
 datasets-oxpet -> train, val, test
 train -> bboxes.h5, binary.h5, images.h5, masks.h5
@@ -26,23 +26,23 @@ val -> bboxes.h5, binary.h5, images.h5, masks.h5
 test -> bboxes.h5, binary.h5, images.h5, masks.h5
 -------------------------------------------------------------
 
-=============================================================
+-------------------------------------------------------------
 Reproduce BaseLine Results
-=============================================================
+-------------------------------------------------------------
 1. Run Baseline_deeplabv3_resnet50.py
 2. BaseLine.pt is the model trained, BaseLine_stats.csv contains the training and validation loss and metrics on test set.
 -------------------------------------------------------------
 
-=============================================================
+-------------------------------------------------------------
 Reproduce COCO Transfer Learning Results
-=============================================================
+-------------------------------------------------------------
 1. Run Transfer_deeplabv3_resnet50.py
 2. COCO_transferred.pt is the model trained, COCO_stats.csv contains the training and validation loss and metrics on test set.
 -------------------------------------------------------------
 
-=============================================================
+-------------------------------------------------------------
 Reproduce Ablation Study Results
-=============================================================
+-------------------------------------------------------------
 1. Run Ablation_deeplabv3_resnet50.py
 2. COCO_transferred_unfreeze.pt is the model trained, Ablation_stats.csv contains the training and validation loss and metrics on test set.
 -------------------------------------------------------------
